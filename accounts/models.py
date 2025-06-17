@@ -68,3 +68,13 @@ class WorkoutExercise(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.sets}x{self.reps})"
+
+class Exercise(models.Model):
+    name = models.CharField(max_length=100)
+    muscle_group = models.CharField(max_length=50)
+    difficulty = models.CharField(max_length=20)
+    equipment = models.CharField(max_length=50)
+    video_url = models.URLField(blank=True, null=True)  # YouTube demo
+
+    def __str__(self):
+        return self.name

@@ -1,29 +1,29 @@
 import os
+import requests
+from dotenv import load_dotenv
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
-from dotenv import load_dotenv
-import requests
 
-# Load environment variables
-load_dotenv()
-
-User = get_user_model()
-
+from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise
 from .serializers import (
     UserSerializer,
     CustomTokenObtainPairSerializer,
     WorkoutPlanSerializer,
     WorkoutRoutineSerializer,
-    WorkoutExerciseSerializer
+    WorkoutExerciseSerializer,
+    ExerciseSerializer,
 )
 
+load_dotenv()
+
+User = get_user_model()
 EXERCISE_DB_API_KEY = os.getenv('EXERCISE_DB_API_KEY')
 EXERCISE_DB_HOST = os.getenv('EXERCISE_DB_HOST', 'exercisedb.p.rapidapi.com')
+YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = UserSerializer
@@ -177,39 +177,57 @@ class CurrentWorkoutPlanView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-class ExerciseListView(APIView):
+class ExerciseListView(generics.ListAPIView):
+    serializer_class = ExerciseSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
-        url = f"https://{EXERCISE_DB_HOST}/exercises"
-        headers = {
-            "X-RapidAPI-Key": EXERCISE_DB_API_KEY,
-            "X-RapidAPI-Host": EXERCISE_DB_HOST
-        }
-        try:
-            response = requests.get(url, headers=headers)
-            response.raise_for_status()
-            return Response(response.json())
-        except Exception:
-            fallback = [
-                {"name": "Push-up", "target": "chest", "equipment": "body weight"},
-                {"name": "Pull-up", "target": "back", "equipment": "pull-up bar"},
-                {"name": "Squat", "target": "quadriceps", "equipment": "body weight"}
-            ]
-            return Response(fallback)
+    def get_queryset(self):
+        queryset = Exercise.objects.all()
+        muscle = self.request.query_params.get('muscle')
+        equipment = self.request.query_params.get('equipment')
+        if muscle and muscle != 'all':
+            queryset = queryset.filter(muscle_group__iexact=muscle)
+        if equipment and equipment != 'all':
+            queryset = queryset.filter(equipment__iexact=equipment)
+        return queryset
+
+def fetch_youtube_demo(exercise_name):
+    if not YOUTUBE_API_KEY:
+        return ""
+    search_url = "https://www.googleapis.com/youtube/v3/search"
+    params = {
+        "part": "snippet",
+        "q": f"{exercise_name} exercise demo",
+        "key": YOUTUBE_API_KEY,
+        "maxResults": 1,
+        "type": "video"
+    }
+    resp = requests.get(search_url, params=params)
+    items = resp.json().get("items")
+    if items:
+        video_id = items[0]["id"]["videoId"]
+        return f"https://www.youtube.com/watch?v={video_id}"
+    return ""
+
+class ExerciseCreateView(generics.CreateAPIView):
+    serializer_class = ExerciseSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    def perform_create(self, serializer):
+        name = self.request.data.get('name')
+        video_url = fetch_youtube_demo(name)
+        serializer.save(video_url=video_url)
 
 class WorkoutHistoryView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # Return an empty list or sample data for now
         return Response([])
 
 class ProgressView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        # Return sample progress data
         sample_data = [
             {"date": "2023-01-01", "weight": 180, "body_fat": 22},
             {"date": "2023-03-01", "weight": 175, "body_fat": 20},

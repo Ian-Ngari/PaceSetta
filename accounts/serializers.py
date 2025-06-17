@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise
+from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise
 
 User = get_user_model()
 
@@ -78,3 +78,8 @@ class WorkoutPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutPlan
         fields = ['id', 'name', 'goal', 'level', 'created_at', 'updated_at', 'routines']
+
+class ExerciseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = ['id', 'name', 'muscle_group', 'difficulty', 'equipment', 'video_url']

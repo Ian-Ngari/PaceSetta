@@ -7,6 +7,7 @@ from .views import (
     UserDetailView,
     WorkoutPlanView,
     ExerciseListView,
+    ExerciseCreateView,  # Make sure this exists in views.py!
     WorkoutHistoryView,
     ProgressView,
     SocialFeedView,
@@ -27,6 +28,7 @@ urlpatterns = [
     path('workout-plans/', WorkoutPlanView.as_view(), name='workout-plans'),
     path('workout-plans/current/', CurrentWorkoutPlanView.as_view(), name='current-workout-plan'),
     path('exercises/', ExerciseListView.as_view(), name='exercise-list'),
+    path('exercises/create/', ExerciseCreateView.as_view(), name='exercise-create'),
     path('workouts/history/', WorkoutHistoryView.as_view(), name='workout-history'),
 
     # Progress

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import api from '../../utils/api';
 
-const ExerciseList = ({ muscleGroup, searchTerm }) => {
+const ExerciseList = ({ muscleGroup, equipment, searchTerm }) => {
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState(null);
@@ -11,7 +11,9 @@ const ExerciseList = ({ muscleGroup, searchTerm }) => {
     const fetchExercises = async () => {
       setLoading(true);
       try {
-        const response = await api.get(`/exercises/?muscle=${muscleGroup}`);
+        const response = await api.get(
+          `/exercises/?muscle=${muscleGroup}&equipment=${equipment}`
+        );
         setExercises(response.data);
       } catch (error) {
         console.error('Error fetching exercises:', error);
@@ -21,7 +23,7 @@ const ExerciseList = ({ muscleGroup, searchTerm }) => {
     };
 
     fetchExercises();
-  }, [muscleGroup]);
+  }, [muscleGroup, equipment]);
 
   const filteredExercises = exercises.filter(exercise =>
     exercise.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -46,17 +48,29 @@ const ExerciseList = ({ muscleGroup, searchTerm }) => {
               className="border rounded-lg p-4 cursor-pointer bg-white shadow-sm hover:shadow-md"
             >
               <h3 className="font-bold text-lg">{exercise.name}</h3>
-              <p className="text-gray-600 capitalize">{exercise.target}</p>
-              
+              <p className="text-gray-600 capitalize">{exercise.muscle_group || exercise.target}</p>
+              <p className="text-gray-500 text-sm">Equipment: {exercise.equipment || 'Bodyweight'}</p>
+              <p className="text-gray-500 text-sm">Difficulty: {exercise.difficulty || 'N/A'}</p>
+              {exercise.video_url && (
+                <div className="mt-2">
+                  <iframe
+                    width="100%"
+                    height="180"
+                    src={exercise.video_url.replace('watch?v=', 'embed/')}
+                    title={exercise.name}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              )}
+
               {selectedExercise?.name === exercise.name && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   className="mt-4 pt-4 border-t"
                 >
-                  <p className="text-sm text-gray-700">
-                    Equipment: {exercise.equipment || 'Bodyweight'}
-                  </p>
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
