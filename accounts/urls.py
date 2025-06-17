@@ -1,10 +1,37 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
-from .views import RegisterView, LoginView, LogoutView
+from .views import (
+    RegisterView,
+    LoginView,
+    LogoutView,
+    UserDetailView,
+    WorkoutPlanView,
+    ExerciseListView,
+    WorkoutHistoryView,
+    ProgressView,
+    SocialFeedView,
+    CurrentWorkoutPlanView,
+)
 
 urlpatterns = [
+    # Authentication
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    # User
+    path('user/', UserDetailView.as_view(), name='user-detail'),
+
+    # Workouts
+    path('workout-plans/', WorkoutPlanView.as_view(), name='workout-plans'),
+    path('workout-plans/current/', CurrentWorkoutPlanView.as_view(), name='current-workout-plan'),
+    path('exercises/', ExerciseListView.as_view(), name='exercise-list'),
+    path('workouts/history/', WorkoutHistoryView.as_view(), name='workout-history'),
+
+    # Progress
+    path('progress/', ProgressView.as_view(), name='progress'),
+
+    # Social
+    path('social/feed/', SocialFeedView.as_view(), name='social-feed'),
 ]
