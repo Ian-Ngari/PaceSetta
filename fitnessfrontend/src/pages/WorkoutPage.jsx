@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import WorkoutPlan from '../components/Workout/WorkoutPlan';
 import WorkoutForm from '../components/Workout/WorkoutForm';
+import WorkoutLogForm from '../components/Workout/WorkoutLogForm';
 import api from '../utils/api';
 import useUserData from '../hooks/useUserData';
 
@@ -117,31 +118,31 @@ const WorkoutPage = () => {
                 setShowForm(true);
               }}
             />
-             <div className="mt-10">
-      <h2 className="text-2xl font-bold mb-4">Log Your Workout</h2>
-      {workoutPlan.routines && workoutPlan.routines.length > 0 ? (
-        workoutPlan.routines.map((routine) => (
-          <div key={routine.id} className="mb-8">
-            <h3 className="text-lg font-semibold mb-2">{routine.day}</h3>
-            {routine.exercises && routine.exercises.length > 0 ? (
-              routine.exercises.map((exercise) => (
-                <div key={exercise.id} className="mb-6 p-4 bg-white rounded shadow">
-                  <div className="font-medium mb-2">{exercise.name}</div>
-                  <div className="text-sm text-gray-600 mb-2">
-                    Sets: {exercise.sets} &nbsp; | &nbsp; Reps: {exercise.reps} &nbsp; | &nbsp; {exercise.weight ? `Weight: ${exercise.weight}` : ''}
+            <div className="mt-10">
+              <h2 className="text-2xl font-bold mb-4">Log Your Workout</h2>
+              {workoutPlan.routines && workoutPlan.routines.length > 0 ? (
+                workoutPlan.routines.map((routine) => (
+                  <div key={routine.id} className="mb-8">
+                    <h3 className="text-lg font-semibold mb-2">{routine.day}</h3>
+                    {routine.exercises && routine.exercises.length > 0 ? (
+                      routine.exercises.map((exercise) => (
+                        <div key={exercise.id} className="mb-6 p-4 bg-white rounded shadow">
+                          <div className="font-medium mb-2">{exercise.name}</div>
+                          <div className="text-sm text-gray-600 mb-2">
+                            Sets: {exercise.sets} &nbsp; | &nbsp; Reps: {exercise.reps} &nbsp; | &nbsp; {exercise.weight ? `Weight: ${exercise.weight}` : ''}
+                          </div>
+                          <WorkoutLogForm defaultExercise={exercise.name} />
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-gray-500 mb-4">No exercises for this routine.</div>
+                    )}
                   </div>
-                  <WorkoutForm defaultExercise={exercise.name} />
-                </div>
-              ))
-            ) : (
-              <div className="text-gray-500 mb-4">No exercises for this routine.</div>
-            )}
-          </div>
-        ))
-      ) : (
-        <div className="text-gray-500">No routines found in this plan.</div>
-      )}
-    </div>
+                ))
+              ) : (
+                <div className="text-gray-500">No routines found in this plan.</div>
+              )}
+            </div>
           </motion.div>
         )}
 
