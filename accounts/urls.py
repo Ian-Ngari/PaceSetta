@@ -12,6 +12,7 @@ from .views import (
     ProgressView,
     SocialFeedView,
     CurrentWorkoutPlanView,
+    WorkoutLogView,
 )
 
 urlpatterns = [
@@ -30,6 +31,7 @@ urlpatterns = [
     path('exercises/', ExerciseListView.as_view(), name='exercise-list'),
     path('exercises/create/', ExerciseCreateView.as_view(), name='exercise-create'),
     path('workouts/history/', WorkoutHistoryView.as_view(), name='workout-history'),
+     path('workouts/logs/', WorkoutLogView.as_view(), name='workout-log'),
 
     # Progress
     path('progress/', ProgressView.as_view(), name='progress'),

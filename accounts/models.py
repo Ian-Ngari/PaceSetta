@@ -78,3 +78,25 @@ class Exercise(models.Model):
 
     def __str__(self):
         return self.name
+    
+class WorkoutLog(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    exercise = models.CharField(max_length=100)
+    sets = models.PositiveIntegerField()
+    reps = models.PositiveIntegerField()
+    weight = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.exercise} on {self.date}"
+    
+class WorkoutLog(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    exercise = models.CharField(max_length=100)
+    sets = models.PositiveIntegerField()
+    reps = models.PositiveIntegerField()
+    weight = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.exercise} on {self.date}"

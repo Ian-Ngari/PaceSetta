@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 
-from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise
+from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog
 from .serializers import (
     UserSerializer,
     CustomTokenObtainPairSerializer,
@@ -16,6 +16,7 @@ from .serializers import (
     WorkoutRoutineSerializer,
     WorkoutExerciseSerializer,
     ExerciseSerializer,
+    WorkoutLogSerializer,
 )
 
 load_dotenv()
@@ -249,3 +250,24 @@ class SocialFeedView(APIView):
                 {"user": "user2", "action": "achieved new PR in Deadlift", "time": "1d ago"}
             ]
         })
+    
+
+class WorkoutLogView(generics.ListCreateAPIView):
+    serializer_class = WorkoutLogSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return WorkoutLog.objects.filter(user=self.request.user).order_by('-date')
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class WorkoutLogView(generics.ListCreateAPIView):
+    serializer_class = WorkoutLogSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return WorkoutLog.objects.filter(user=self.request.user).order_by('-date')
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
