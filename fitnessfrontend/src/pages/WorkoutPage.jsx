@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import WorkoutPlan from '../components/Workout/WorkoutPlan';
 import WorkoutForm from '../components/Workout/WorkoutForm';
 import WorkoutLogForm from '../components/Workout/WorkoutLogForm';
+import WorkoutHistory from '../components/Progress/WorkoutHistory';
 import api from '../utils/api';
 import useUserData from '../hooks/useUserData';
 
@@ -12,13 +13,13 @@ const WorkoutPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [completedRoutines, setCompletedRoutines] = useState([]);
+  const [refreshHistory, setRefreshHistory] = useState(false);
 
   const generateWorkoutPlan = async (formData) => {
     setIsLoading(true);
     setError(null);
-    
     try {
-      // Correct endpoint: /workout-plans/
       const response = await api.post('/workout-plans/', {
         goal: formData.goal,
         level: formData.level,
@@ -26,7 +27,6 @@ const WorkoutPage = () => {
         preferences: formData.preferences,
         user_id: userData.id
       });
-
       setWorkoutPlan(response.data);
       setShowForm(false);
     } catch (err) {
@@ -39,7 +39,6 @@ const WorkoutPage = () => {
 
   const fetchCurrentWorkout = async () => {
     try {
-      // Correct endpoint: /workout-plans/current/
       const response = await api.get('/workout-plans/current/');
       if (response.data) {
         setWorkoutPlan(response.data);
@@ -49,9 +48,40 @@ const WorkoutPage = () => {
     }
   };
 
+  // Fetch completed routines for today
   useEffect(() => {
     fetchCurrentWorkout();
   }, []);
+
+  useEffect(() => {
+    const fetchCompleted = async () => {
+      try {
+        const res = await api.get('/workouts/completed/');
+        const today = new Date().toISOString().slice(0, 10);
+        setCompletedRoutines(
+          res.data.filter(c => c.date === today).map(c => c.routine_id)
+        );
+      } catch (err) {
+        setCompletedRoutines([]);
+      }
+    };
+    if (workoutPlan) {
+      fetchCompleted();
+    }
+  }, [workoutPlan]);
+
+  const handleCompleteRoutine = async (routineId) => {
+    try {
+      await api.post('/workouts/completed/', { routine_id: routineId });
+      setCompletedRoutines([...completedRoutines, routineId]);
+      // Optionally, trigger a refresh in ActivityFeed if you want instant update
+    } catch (err) {
+      alert('Failed to mark as completed.');
+    }
+  };
+
+  // Pass this to WorkoutLogForm so it can refresh WorkoutHistory after logging
+  const handleLogged = () => setRefreshHistory(r => !r);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
@@ -121,27 +151,46 @@ const WorkoutPage = () => {
             <div className="mt-10">
               <h2 className="text-2xl font-bold mb-4">Log Your Workout</h2>
               {workoutPlan.routines && workoutPlan.routines.length > 0 ? (
-                workoutPlan.routines.map((routine) => (
-                  <div key={routine.id} className="mb-8">
-                    <h3 className="text-lg font-semibold mb-2">{routine.day}</h3>
-                    {routine.exercises && routine.exercises.length > 0 ? (
-                      routine.exercises.map((exercise) => (
-                        <div key={exercise.id} className="mb-6 p-4 bg-white rounded shadow">
-                          <div className="font-medium mb-2">{exercise.name}</div>
-                          <div className="text-sm text-gray-600 mb-2">
-                            Sets: {exercise.sets} &nbsp; | &nbsp; Reps: {exercise.reps} &nbsp; | &nbsp; {exercise.weight ? `Weight: ${exercise.weight}` : ''}
+                workoutPlan.routines.map((routine) => {
+                  const isCompleted = completedRoutines.includes(routine.id);
+                  return (
+                    <div key={routine.id} className="mb-8">
+                      <h3 className="text-lg font-semibold mb-2 flex items-center">
+                        {routine.day}
+                        {isCompleted && (
+                          <span className="ml-2 px-2 py-1 bg-green-200 text-green-800 rounded text-xs">Completed</span>
+                        )}
+                      </h3>
+                      {routine.exercises && routine.exercises.length > 0 ? (
+                        routine.exercises.map((exercise) => (
+                          <div key={exercise.id} className="mb-6 p-4 bg-white rounded shadow">
+                            <div className="font-medium mb-2">{exercise.name}</div>
+                            <div className="text-sm text-gray-600 mb-2">
+                              Sets: {exercise.sets} &nbsp; | &nbsp; Reps: {exercise.reps} &nbsp; | &nbsp; {exercise.weight ? `Weight: ${exercise.weight}` : ''}
+                            </div>
+                            <WorkoutLogForm defaultExercise={exercise.name} onLogged={handleLogged} />
                           </div>
-                          <WorkoutLogForm defaultExercise={exercise.name} />
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-gray-500 mb-4">No exercises for this routine.</div>
-                    )}
-                  </div>
-                ))
+                        ))
+                      ) : (
+                        <div className="text-gray-500 mb-4">No exercises for this routine.</div>
+                      )}
+                      <button
+                        onClick={() => handleCompleteRoutine(routine.id)}
+                        className={`mt-2 px-4 py-2 rounded ${isCompleted ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                        disabled={isCompleted}
+                      >
+                        {isCompleted ? 'Completed' : 'Mark as Completed'}
+                      </button>
+                    </div>
+                  );
+                })
               ) : (
                 <div className="text-gray-500">No routines found in this plan.</div>
               )}
+            </div>
+            {/* Show WorkoutHistory below the routines */}
+            <div className="mt-10">
+              <WorkoutHistory key={refreshHistory} />
             </div>
           </motion.div>
         )}

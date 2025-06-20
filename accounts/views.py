@@ -1,14 +1,16 @@
 import os
 import requests
 from dotenv import load_dotenv
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
+from django.db.models import Count
 
-from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog
+from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog, Follow, WorkoutCompletion, Activity, CustomUser, WorkoutLogLike, WorkoutLogComment
 from .serializers import (
     UserSerializer,
     CustomTokenObtainPairSerializer,
@@ -17,6 +19,11 @@ from .serializers import (
     WorkoutExerciseSerializer,
     ExerciseSerializer,
     WorkoutLogSerializer,
+    FollowSerializer,
+    WorkoutCompletionSerializer,
+    ActivitySerializer,
+    WorkoutLogCommentSerializer,
+    WorkoutLogLikeSerializer
 )
 
 load_dotenv()
@@ -219,12 +226,6 @@ class ExerciseCreateView(generics.CreateAPIView):
         video_url = fetch_youtube_demo(name)
         serializer.save(video_url=video_url)
 
-class WorkoutHistoryView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        return Response([])
-
 class ProgressView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -250,7 +251,6 @@ class SocialFeedView(APIView):
                 {"user": "user2", "action": "achieved new PR in Deadlift", "time": "1d ago"}
             ]
         })
-    
 
 class WorkoutLogView(generics.ListCreateAPIView):
     serializer_class = WorkoutLogSerializer
@@ -262,12 +262,95 @@ class WorkoutLogView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-class WorkoutLogView(generics.ListCreateAPIView):
-    serializer_class = WorkoutLogSerializer
+class FollowUserView(generics.CreateAPIView):
+    serializer_class = FollowSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        print("FollowUserView POST payload:", self.request.data)
+        follower = self.request.user
+        following = serializer.validated_data['following']
+        if follower == following:
+            raise serializers.ValidationError("You cannot follow yourself.")
+        if Follow.objects.filter(follower=follower, following=following).exists():
+            raise serializers.ValidationError("You are already following this user.")
+        serializer.save(follower=follower)
+
+class WorkoutCompletionView(generics.ListCreateAPIView):
+    serializer_class = WorkoutCompletionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return WorkoutLog.objects.filter(user=self.request.user).order_by('-date')
+        return WorkoutCompletion.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        completion = serializer.save(user=self.request.user)
+        # Log activity
+        Activity.objects.create(
+            user=self.request.user,
+            action=f"completed a workout routine",
+            routine_id=completion.routine_id
+        )
+
+class ActivityFeedView(generics.ListAPIView):
+    serializer_class = ActivitySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Activity.objects.order_by('-time')[:50]
+
+class LeaderboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Top 5 users with most completed workouts
+        users = CustomUser.objects.annotate(
+            workouts=Count('workoutcompletion')
+        ).order_by('-workouts')[:5]
+        data = [
+            {
+                "id": user.id,
+                "username": user.username,
+                "workouts": user.workouts,
+                "avatar": "🏋️",
+            }
+            for user in users
+        ]
+        return Response(data)
+
+class WorkoutLogLikeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        print("WorkoutLogLikeView POST payload:", request.data)
+        log_id = request.data.get('log_id')
+        if not log_id:
+            print("ERROR: Missing log_id")
+            return Response({'error': 'log_id required'}, status=400)
+        log = WorkoutLog.objects.filter(id=log_id).first()
+        if not log:
+            print(f"ERROR: WorkoutLog with id {log_id} not found")
+            return Response({'error': 'WorkoutLog not found'}, status=404)
+        like, created = WorkoutLogLike.objects.get_or_create(user=request.user, workout_log=log)
+        print(f"Like created: {created}, Like object: {like}")
+        serializer = WorkoutLogLikeSerializer(like)
+        return Response(serializer.data, status=200)
+
+class WorkoutLogCommentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        print("WorkoutLogCommentView POST payload:", request.data)
+        log_id = request.data.get('log_id')
+        comment = request.data.get('comment')
+        if not log_id or not comment:
+            print("ERROR: Missing log_id or comment")
+            return Response({'error': 'log_id and comment required'}, status=400)
+        log = WorkoutLog.objects.filter(id=log_id).first()
+        if not log:
+            print(f"ERROR: WorkoutLog with id {log_id} not found")
+            return Response({'error': 'WorkoutLog not found'}, status=404)
+        comment_obj = WorkoutLogComment.objects.create(user=request.user, workout_log=log, text=comment)
+        print(f"Comment created: {comment_obj}")
+        serializer = WorkoutLogCommentSerializer(comment_obj)
+        return Response(serializer.data, status=200)

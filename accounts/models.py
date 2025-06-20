@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -90,13 +91,44 @@ class WorkoutLog(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.exercise} on {self.date}"
     
-class WorkoutLog(models.Model):
+
+    
+class Follow(models.Model):
+    follower = models.ForeignKey(CustomUser, related_name='following', on_delete=models.CASCADE)
+    following = models.ForeignKey(CustomUser, related_name='followers', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('follower', 'following')
+
+class WorkoutLogLike(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    workout_log = models.ForeignKey(WorkoutLog, on_delete=models.CASCADE, related_name='likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'workout_log')
+
+class WorkoutLogComment(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    workout_log = models.ForeignKey(WorkoutLog, on_delete=models.CASCADE, related_name='comments')
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class WorkoutCompletion(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    routine_id = models.IntegerField()  
     date = models.DateField(auto_now_add=True)
-    exercise = models.CharField(max_length=100)
-    sets = models.PositiveIntegerField()
-    reps = models.PositiveIntegerField()
-    weight = models.FloatField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('user', 'routine_id', 'date')
+
+class Activity(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    action = models.CharField(max_length=255)
+    time = models.DateTimeField(auto_now_add=True)
+    routine_id = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.exercise} on {self.date}"
+        return f"{self.user.username} - {self.action} at {self.time}"

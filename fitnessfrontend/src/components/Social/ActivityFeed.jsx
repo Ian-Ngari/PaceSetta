@@ -6,9 +6,18 @@ import {
   faDumbbell, 
   faFire, 
   faTrophy, 
-  faUserPlus,
-  faComment
+  faUserPlus
 } from '@fortawesome/free-solid-svg-icons';
+
+const formatDateTime = (isoString) => {
+  const date = new Date(isoString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
 
 const ActivityFeed = () => {
   const [activities, setActivities] = useState([]);
@@ -18,50 +27,8 @@ const ActivityFeed = () => {
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        // In a real app, you would fetch from your API
-        // const response = await api.get('/social/activity/');
-        
-        // Mock data - replace with real API call
-        const mockActivities = [
-          {
-            id: 1,
-            user: 'FitnessPro',
-            action: 'completed a Chest Workout',
-            time: '2 hours ago',
-            type: 'workout',
-            likes: 12,
-            comments: 3
-          },
-          {
-            id: 2,
-            user: 'GymLover',
-            action: 'achieved a new PR in Deadlift (315 lbs)',
-            time: '1 day ago',
-            type: 'pr',
-            likes: 24,
-            comments: 8
-          },
-          {
-            id: 3,
-            user: 'HealthyLife',
-            action: 'started following you',
-            time: '2 days ago',
-            type: 'follow',
-            likes: 0,
-            comments: 0
-          },
-          {
-            id: 4,
-            user: 'IronMan',
-            action: 'completed a 5-day workout streak',
-            time: '3 days ago',
-            type: 'streak',
-            likes: 18,
-            comments: 5
-          }
-        ];
-        
-        setActivities(mockActivities);
+        const response = await api.get('/social/activity/');
+        setActivities(response.data);
       } catch (err) {
         setError('Failed to load activities');
       } finally {
@@ -72,19 +39,23 @@ const ActivityFeed = () => {
     fetchActivities();
   }, []);
 
-  const getActivityIcon = (type) => {
-    switch(type) {
-      case 'workout':
-        return <FontAwesomeIcon icon={faDumbbell} className="text-blue-500" />;
-      case 'pr':
-        return <FontAwesomeIcon icon={faTrophy} className="text-yellow-500" />;
-      case 'follow':
-        return <FontAwesomeIcon icon={faUserPlus} className="text-green-500" />;
-      case 'streak':
-        return <FontAwesomeIcon icon={faFire} className="text-red-500" />;
-      default:
-        return <FontAwesomeIcon icon={faDumbbell} />;
+  const getActivityIcon = (type, action) => {
+    if (type) {
+      switch(type) {
+        case 'workout':
+          return <FontAwesomeIcon icon={faDumbbell} className="text-blue-500" />;
+        case 'pr':
+          return <FontAwesomeIcon icon={faTrophy} className="text-yellow-500" />;
+        case 'follow':
+          return <FontAwesomeIcon icon={faUserPlus} className="text-green-500" />;
+        case 'streak':
+          return <FontAwesomeIcon icon={faFire} className="text-red-500" />;
+        default:
+          return <FontAwesomeIcon icon={faDumbbell} />;
+      }
     }
+    if (action && action.includes('completed')) return <FontAwesomeIcon icon={faDumbbell} className="text-blue-500" />;
+    return <FontAwesomeIcon icon={faDumbbell} />;
   };
 
   if (loading) return (
@@ -103,56 +74,32 @@ const ActivityFeed = () => {
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       <div className="p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Recent Activity</h2>
-        
         <div className="space-y-6">
-          {activities.map((activity, index) => (
-            <motion.div
-              key={activity.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="border-b pb-4 last:border-b-0"
-            >
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0 mt-1">
-                  {getActivityIcon(activity.type)}
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium text-gray-900">{activity.user}</p>
-                    <span className="text-sm text-gray-500">{activity.time}</span>
-                  </div>
-                  <p className="text-gray-700 mt-1">{activity.action}</p>
-                  
-                  <div className="flex items-center mt-3 space-x-4">
-                    <button className="flex items-center text-sm text-gray-500 hover:text-blue-500">
-                      <FontAwesomeIcon icon={faComment} className="mr-1" />
-                      <span>{activity.comments} comments</span>
-                    </button>
-                    <button className="flex items-center text-sm text-gray-500 hover:text-red-500">
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-4 w-4 mr-1" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                      >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth={2} 
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" 
-                        />
-                      </svg>
-                      <span>{activity.likes} likes</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+         {activities.map((activity, index) => (
+           <motion.div
+             key={activity.id}
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: index * 0.1 }}
+             className="border-b pb-4 last:border-b-0"
+           >
+             <div className="flex items-start space-x-3">
+               <div className="flex-shrink-0 mt-1">
+                 {getActivityIcon(activity.type, activity.action)}
+               </div>
+               <div className="flex-1">
+                 <div className="flex items-center justify-between">
+                  <p className="font-medium text-gray-900">{activity.username}</p>
+                   <span className="text-sm text-gray-500">
+                     {activity.time ? formatDateTime(activity.time) : ''}
+                   </span>
+                 </div>
+                 <p className="text-gray-700 mt-1">{activity.action}</p>
+               </div>
+             </div>
+           </motion.div>
+         ))}
         </div>
-        
         {activities.length === 0 && (
           <div className="text-center py-8 text-gray-500">
             No activities found. Start working out to see activity here!

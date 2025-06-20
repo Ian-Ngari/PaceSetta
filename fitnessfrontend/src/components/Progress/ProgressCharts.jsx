@@ -22,7 +22,7 @@ const ProgressCharts = () => {
             <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
             <Tooltip />
             <Legend />
-            <Bar yAxisId="left" dataKey="weight" fill="#8884d8" name="Weight (lbs)" />
+            <Bar yAxisId="left" dataKey="weight" fill="#8884d8" name="Weight (KG)" />
             <Bar yAxisId="right" dataKey="bodyFat" fill="#82ca9d" name="Body Fat (%)" />
           </BarChart>
         </ResponsiveContainer>

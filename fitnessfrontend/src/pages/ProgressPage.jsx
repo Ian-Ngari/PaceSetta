@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import WorkoutForm from '../components/Workout/WorkoutForm';
 import api from '../utils/api';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Calendar from 'react-calendar';
@@ -20,7 +19,6 @@ const ProgressPage = () => {
         const response = await api.get('/workouts/logs/');
         setWorkoutData(response.data);
 
-        // Calendar: unique dates
         const uniqueDates = [...new Set(response.data.map(log => log.date))];
         setCalendarDates(uniqueDates);
 
@@ -62,8 +60,6 @@ const ProgressPage = () => {
 
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <WorkoutForm onLogged={() => setRefresh(r => !r)} />
-
       {/* Progress Chart */}
       <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
         <h2 className="text-xl font-semibold mb-6">Strength Progress (Total Weight per Day)</h2>
@@ -75,7 +71,7 @@ const ProgressPage = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="weight" fill="#2563eb" name="Total Weight (lbs)" />
+              <Bar dataKey="weight" fill="#2563eb" name="Total Weight (KG)" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -116,7 +112,7 @@ const ProgressPage = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{workout.exercise}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.sets}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.reps}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.weight} lbs</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.weight} KG</td>
                     </tr>
                   ))
                 )}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../utils/api';
 
-const WorkoutHistory = () => {
+const WorkoutHistory = ({ refreshKey }) => {
   const [workoutData, setWorkoutData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -11,14 +11,18 @@ const WorkoutHistory = () => {
       try {
         const response = await api.get('/workouts/logs/');
         setWorkoutData(response.data);
+        // Debug log: show fetched logs in the browser console
+        console.log('Fetched workout logs:', response.data);
       } catch (error) {
         setWorkoutData([]);
+        // Debug log: show error in the browser console
+        console.error('Error fetching workout logs:', error);
       } finally {
         setLoading(false);
       }
     };
     fetchLogs();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg">
@@ -49,7 +53,7 @@ const WorkoutHistory = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{workout.exercise}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.sets}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.reps}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.weight} lbs</td>
+                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.weight} KG</td>
                   </tr>
                 ))
               )}

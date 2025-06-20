@@ -25,7 +25,7 @@ const WorkoutLogForm = ({ onLogged, defaultExercise = '' }) => {
         weight: Number(form.weight)
       });
       setForm({ exercise: defaultExercise, sets: '', reps: '', weight: '' });
-      if (onLogged) onLogged();
+      if (onLogged) onLogged(); 
     } catch (error) {
       alert('Failed to log workout');
     } finally {
@@ -69,7 +69,7 @@ const WorkoutLogForm = ({ onLogged, defaultExercise = '' }) => {
         <input
           type="number"
           name="weight"
-          placeholder="Weight (lbs)"
+          placeholder="Weight (KG)"
           value={form.weight}
           onChange={handleChange}
           className="border rounded-md px-3 py-2 w-1/3"

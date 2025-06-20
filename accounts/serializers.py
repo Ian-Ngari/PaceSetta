@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog
+from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog, Follow, WorkoutCompletion, Activity, WorkoutLogLike, WorkoutLogComment
 
 User = get_user_model()
 
@@ -87,13 +87,48 @@ class ExerciseSerializer(serializers.ModelSerializer):
 from .models import WorkoutLog
 
 class WorkoutLogSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', read_only=True)
     class Meta:
         model = WorkoutLog
         fields = ['id', 'user', 'date', 'exercise', 'sets', 'reps', 'weight']
+
+class WorkoutLogLikeSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', read_only=True)
+    class Meta:
+        model = WorkoutLogLike
+        fields = ['id', 'user', 'workout_log', 'created_at']
+
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follow
+        fields = ['id', 'follower', 'following', 'created_at']
+        read_only_fields = ['follower', 'created_at']
+
+class FollowSerializer(serializers.ModelSerializer):
+    follower = serializers.CharField(source='follower.username', read_only=True)
+    following = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    class Meta:
+        model = Follow
+        fields = ['id', 'follower', 'following', 'created_at']
+
+
+class WorkoutCompletionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkoutCompletion
+        fields = ['id', 'user', 'routine_id', 'date']
         read_only_fields = ['user', 'date']
 
-class WorkoutLogSerializer(serializers.ModelSerializer):
+class ActivitySerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
     class Meta:
-        model = WorkoutLog
-        fields = ['id', 'user', 'date', 'exercise', 'sets', 'reps', 'weight']
-        read_only_fields = ['user', 'date']
+        model = Activity
+        fields = ['id', 'user', 'username', 'action', 'time', 'routine_id']
+
+
+class WorkoutLogCommentSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.username', read_only=True)
+    class Meta:
+        model = WorkoutLogComment
+        fields = ['id', 'user', 'workout_log', 'text', 'created_at']
