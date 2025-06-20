@@ -1,6 +1,7 @@
 import React from 'react';
 import RestTimer from '../components/Tools/RestTimer';
 import WorkoutNotes from '../components/Tools/WorkoutNotes';
+import VoiceNotes from '../components/Tools/VoiceNotes';
 import { motion } from 'framer-motion';
 
 const ToolsPage = () => {
@@ -15,7 +16,7 @@ const ToolsPage = () => {
           Workout Tools
         </motion.h1>
         
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -30,6 +31,14 @@ const ToolsPage = () => {
             transition={{ delay: 0.2 }}
           >
             <WorkoutNotes />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <VoiceNotes />
           </motion.div>
         </div>
       </div>

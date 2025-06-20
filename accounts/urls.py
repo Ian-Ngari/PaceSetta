@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
     RegisterView,
@@ -17,8 +19,8 @@ from .views import (
     WorkoutCompletionView,
     ActivityFeedView,
     LeaderboardView,
-    WorkoutLogLikeView,   
-    WorkoutLogCommentView 
+    VoiceNoteListCreateView,
+    VoiceNoteDeleteView,
 )
 
 urlpatterns = [
@@ -48,4 +50,12 @@ urlpatterns = [
     path('social/activity/', ActivityFeedView.as_view(), name='activity-feed'),
   
     path('social/leaderboard/', LeaderboardView.as_view(), name='leaderboard'),
+
+
+      path('tools/voice-notes/', VoiceNoteListCreateView.as_view(), name='voice-notes'),
+    path('tools/voice-notes/<int:pk>/', VoiceNoteDeleteView.as_view(), name='voice-note-delete'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

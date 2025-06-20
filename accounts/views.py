@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Count
 
-from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog, Follow, WorkoutCompletion, Activity, CustomUser, WorkoutLogLike, WorkoutLogComment
+from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog, Follow, WorkoutCompletion, Activity, CustomUser, WorkoutLogLike, WorkoutLogComment, VoiceNote
 from .serializers import (
     UserSerializer,
     CustomTokenObtainPairSerializer,
@@ -23,7 +23,8 @@ from .serializers import (
     WorkoutCompletionSerializer,
     ActivitySerializer,
     WorkoutLogCommentSerializer,
-    WorkoutLogLikeSerializer
+    WorkoutLogLikeSerializer,
+    VoiceNoteSerializer
 )
 
 load_dotenv()
@@ -354,3 +355,21 @@ class WorkoutLogCommentView(APIView):
         print(f"Comment created: {comment_obj}")
         serializer = WorkoutLogCommentSerializer(comment_obj)
         return Response(serializer.data, status=200)
+    
+class VoiceNoteListCreateView(generics.ListCreateAPIView):
+    serializer_class = VoiceNoteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return VoiceNote.objects.filter(user=self.request.user).order_by('-created_at')
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class VoiceNoteDeleteView(generics.DestroyAPIView):
+    serializer_class = VoiceNoteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = VoiceNote.objects.all()
+
+    def get_queryset(self):
+        return VoiceNote.objects.filter(user=self.request.user)

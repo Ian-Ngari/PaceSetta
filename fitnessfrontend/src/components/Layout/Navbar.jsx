@@ -54,6 +54,12 @@ const Navbar = () => {
                 Progress
               </Link>
               <Link 
+  to="/nutrition" 
+  className="text-gray-700 hover:text-indigo-600 transition-colors"
+>
+  Nutrition
+</Link>
+              <Link 
                 to="/social" 
                 className="text-gray-700 hover:text-indigo-600 transition-colors"
               >

@@ -2,8 +2,40 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import jsPDF from 'jspdf';
 
 const WorkoutPlan = ({ plan, onEdit, onNewPlan }) => {
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(18);
+    doc.text(plan.name || 'Workout Plan', 10, 15);
+    doc.setFontSize(12);
+    doc.text(`Goal: ${plan.goal}`, 10, 25);
+    doc.text(`Level: ${plan.level}`, 10, 32);
+
+    let y = 42;
+    plan.routines.forEach((routine, idx) => {
+      doc.setFontSize(14);
+      doc.text(`${routine.day}`, 10, y);
+      y += 7;
+      routine.exercises.forEach((ex, i) => {
+        doc.setFontSize(12);
+        doc.text(
+          `- ${ex.name}: ${ex.sets} sets x ${ex.reps} reps${ex.weight ? ` @ ${ex.weight} kg` : ''}`,
+          14,
+          y
+        );
+        y += 6;
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+      });
+      y += 4;
+    });
+
+    doc.save('workout-plan.pdf');
+  };
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       <div className="p-6">
@@ -35,6 +67,7 @@ const WorkoutPlan = ({ plan, onEdit, onNewPlan }) => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+               onClick={exportToPDF}
               className="px-4 py-2 bg-red-600 text-white rounded-md flex items-center"
             >
               <FontAwesomeIcon icon={faFilePdf} className="mr-2" />

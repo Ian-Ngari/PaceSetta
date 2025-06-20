@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog, Follow, WorkoutCompletion, Activity, WorkoutLogLike, WorkoutLogComment
+from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog, Follow, WorkoutCompletion, Activity, WorkoutLogLike, WorkoutLogComment, VoiceNote
 
 User = get_user_model()
 
@@ -132,3 +132,9 @@ class WorkoutLogCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutLogComment
         fields = ['id', 'user', 'workout_log', 'text', 'created_at']
+
+class VoiceNoteSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    class Meta:
+        model = VoiceNote
+        fields = ['id', 'username', 'audio', 'created_at']
