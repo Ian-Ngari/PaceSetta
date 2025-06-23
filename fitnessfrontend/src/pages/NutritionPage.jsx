@@ -104,7 +104,7 @@ const NutritionPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-3xl font-bold text-gray-900 mb-8"
         >
-          Meal Planner (Spoonacular)
+          Meal Planner 
         </motion.h1>
 
         <div className="mb-8 bg-white rounded-lg shadow p-6">

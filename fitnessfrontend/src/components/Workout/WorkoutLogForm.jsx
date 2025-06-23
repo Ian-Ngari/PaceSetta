@@ -6,7 +6,7 @@ const WorkoutLogForm = ({ onLogged, defaultExercise = '' }) => {
     exercise: defaultExercise,
     sets: '',
     reps: '',
-    weight: ''
+    calories: ''
   });
   const [loading, setLoading] = useState(false);
 
@@ -22,9 +22,9 @@ const WorkoutLogForm = ({ onLogged, defaultExercise = '' }) => {
         exercise: form.exercise,
         sets: Number(form.sets),
         reps: Number(form.reps),
-        weight: Number(form.weight)
+        calories: Number(form.calories)
       });
-      setForm({ exercise: defaultExercise, sets: '', reps: '', weight: '' });
+      setForm({ exercise: defaultExercise, sets: '', reps: '', calories: '' });
       if (onLogged) onLogged(); 
     } catch (error) {
       alert('Failed to log workout');
@@ -68,9 +68,9 @@ const WorkoutLogForm = ({ onLogged, defaultExercise = '' }) => {
         />
         <input
           type="number"
-          name="weight"
-          placeholder="Weight (KG)"
-          value={form.weight}
+          name="calories"
+          placeholder="Calories Lost"
+          value={form.calories}
           onChange={handleChange}
           className="border rounded-md px-3 py-2 w-1/3"
         />

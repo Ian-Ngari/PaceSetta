@@ -38,7 +38,7 @@ const WorkoutHistory = ({ refreshKey }) => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Exercise</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sets</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reps</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Weight</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Calories Lost</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -53,7 +53,7 @@ const WorkoutHistory = ({ refreshKey }) => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{workout.exercise}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.sets}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.reps}</td>
-                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.weight} KG</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{workout.calories || 0}</td>
                   </tr>
                 ))
               )}

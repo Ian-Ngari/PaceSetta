@@ -1,9 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import LandingPage from './components/LandingPage';
+// or import LandingPage1B from './pages/LandingPage1B';
 import Register from './components/Auth/register';
-import Login from './components/Auth/Login';
+import Login from './components/Auth/login';
 import PrivateRoute from './components/Auth/PrivateRoute';
 import Navbar from './components/Layout/Navbar';
 import Dashboard from './pages/Dashboard';
@@ -17,7 +19,7 @@ import NutritionPage from './pages/NutritionPage';
 function App() {
   const location = useLocation();
   
-  const showNavbar = !['/login', '/register'].includes(location.pathname);
+  const showNavbar = !['/', '/login', '/register'].includes(location.pathname);
 
   return (
     <div className="app">
@@ -33,7 +35,7 @@ function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <LandingPage />
+              <LandingPage /> {/* or LandingPage1B */}
             </motion.div>
           } />
           
@@ -146,11 +148,17 @@ function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="flex items-center justify-center h-screen"
+              className="flex items-center justify-center h-screen bg-[#CAF0F8]"
             >
-              <div className="text-center">
+              <div className="text-center bg-white p-8 rounded-xl shadow-lg">
                 <h1 className="text-4xl font-bold mb-4">404</h1>
-                <p className="text-xl">Page not found</p>
+                <p className="text-xl text-gray-600">Page not found</p>
+                <Link 
+                  to="/" 
+                  className="mt-6 inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Return Home
+                </Link>
               </div>
             </motion.div>
           } />
@@ -159,4 +167,5 @@ function App() {
     </div>
   );
 }
+
 export default App;

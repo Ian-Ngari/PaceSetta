@@ -1,15 +1,35 @@
 import React, { useState } from 'react';
 
+const BODY_PARTS = [
+  "back",
+  "cardio",
+  "chest",
+  "lower arms",
+  "lower legs",
+  "neck",
+  "shoulders",
+  "upper arms",
+  "upper legs",
+  "waist"
+];
+
 const WorkoutForm = ({ onSubmit, onCancel, isLoading }) => {
   const [form, setForm] = useState({
     goal: '',
     level: '',
     days: 3,
-    preferences: ''
+    preferences: '',
+    bodyParts: []
   });
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleBodyPartsChange = e => {
+    const options = Array.from(e.target.options);
+    const selected = options.filter(o => o.selected).map(o => o.value);
+    setForm({ ...form, bodyParts: selected });
   };
 
   const handleSubmit = e => {
@@ -74,6 +94,20 @@ const WorkoutForm = ({ onSubmit, onCancel, isLoading }) => {
           className="border rounded-md px-3 py-2 w-full"
           placeholder="e.g. dumbbells, bodyweight"
         />
+      </div>
+      <div className="mb-4">
+        <label className="block mb-1 font-medium">Target Body Parts (hold Ctrl/Cmd to select multiple)</label>
+        <select
+          name="bodyParts"
+          multiple
+          value={form.bodyParts}
+          onChange={handleBodyPartsChange}
+          className="border rounded-md px-3 py-2 w-full"
+        >
+          {BODY_PARTS.map(bp => (
+            <option key={bp} value={bp}>{bp.charAt(0).toUpperCase() + bp.slice(1)}</option>
+          ))}
+        </select>
       </div>
       <div className="flex gap-4">
         <button

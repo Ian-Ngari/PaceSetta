@@ -2,12 +2,13 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const ProgressCharts = () => {
+  // Example data: replace with your real data source if needed
   const progressData = [
-    { date: 'Jan', weight: 180, bodyFat: 22 },
-    { date: 'Feb', weight: 178, bodyFat: 21 },
-    { date: 'Mar', weight: 175, bodyFat: 20 },
-    { date: 'Apr', weight: 173, bodyFat: 19 },
-    { date: 'May', weight: 170, bodyFat: 18 }
+    { date: 'Jan', calories: 1200, bodyFat: 22 },
+    { date: 'Feb', calories: 1500, bodyFat: 21 },
+    { date: 'Mar', calories: 1700, bodyFat: 20 },
+    { date: 'Apr', calories: 1600, bodyFat: 19 },
+    { date: 'May', calories: 1800, bodyFat: 18 }
   ];
 
   return (
@@ -22,7 +23,7 @@ const ProgressCharts = () => {
             <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
             <Tooltip />
             <Legend />
-            <Bar yAxisId="left" dataKey="weight" fill="#8884d8" name="Weight (KG)" />
+            <Bar yAxisId="left" dataKey="calories" fill="#8884d8" name="Calories Lost" />
             <Bar yAxisId="right" dataKey="bodyFat" fill="#82ca9d" name="Body Fat (%)" />
           </BarChart>
         </ResponsiveContainer>
