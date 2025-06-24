@@ -20,7 +20,8 @@ const Navbar = () => {
     { path: "/workouts", name: "Workouts", icon: <FaDumbbell /> },
     { path: "/progress", name: "Progress", icon: <FaChartLine /> },
     { path: "/social", name: "Social", icon: <FaUsers /> },
-    { path: "/tools", name: "Tools", icon: <FaTools /> }
+    { path: "/tools", name: "Tools", icon: <FaTools /> },
+     { path: "/membership", name: "Membership", icon: <FaUsers /> },
   ];
 
   return (

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -54,6 +54,7 @@ urlpatterns = [
 
       path('tools/voice-notes/', VoiceNoteListCreateView.as_view(), name='voice-notes'),
     path('tools/voice-notes/<int:pk>/', VoiceNoteDeleteView.as_view(), name='voice-note-delete'),
+     path('api/payments/', include('payments.urls')),
 ]
 
 

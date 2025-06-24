@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import LandingPage from './components/LandingPage';
-// or import LandingPage1B from './pages/LandingPage1B';
+import MembershipPage from './pages/MembershipPage';
 import Register from './components/Auth/register';
 import Login from './components/Auth/login';
 import PrivateRoute from './components/Auth/PrivateRoute';
@@ -139,6 +139,7 @@ function App() {
                 <NutritionPage />
               </motion.div>
             } />
+             <Route path="/membership" element={<MembershipPage />} />
           </Route>
           
           {/* 404 Fallback */}
