@@ -175,10 +175,13 @@ USE_I18N = True
 USE_TZ = True
 
 
-STRIPE_SECRET_KEY = 'sk_test_51Rd6DW4ZxM9ej8PK8BBWy19clHXueQ6FuiMlrLnJfELdQeppong0QQrpyqc6q8TgRce6xql3KSeNXNeWsRG4VlpN00ZApXd5z3'  
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51Rd6DW4ZxM9ej8PKB1gHNYbcsxLSOFjQDrKdxxrdecQk8mhkclTikrfw6DS8aTo7GQRtT4PCJPguMa8ZeETHxHkT00hMxM44dc'  
-STRIPE_PRICE_ID = 'price_1Rd6mN4ZxM9ej8PKJfPfgFra'  
-FRONTEND_DOMAIN = "http://localhost:5173"
+
+
+
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+STRIPE_PRICE_ID = os.getenv('STRIPE_PRICE_ID')
+FRONTEND_DOMAIN = os.getenv('FRONTEND_DOMAIN')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
