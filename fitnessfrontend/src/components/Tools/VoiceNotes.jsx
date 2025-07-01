@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { FaMicrophone, FaStop, FaSave, FaTrash, FaPlay } from 'react-icons/fa';
 
 const LOCAL_KEY = 'voice_notes';
 
@@ -10,19 +12,16 @@ const VoiceNotes = () => {
   const mediaRecorderRef = useRef(null);
   const audioChunks = useRef([]);
 
-  // Load notes from localStorage
   useEffect(() => {
     const saved = localStorage.getItem(LOCAL_KEY);
     if (saved) setNotes(JSON.parse(saved));
   }, []);
 
-  // Save notes to localStorage
   const saveNotes = (newNotes) => {
     setNotes(newNotes);
     localStorage.setItem(LOCAL_KEY, JSON.stringify(newNotes));
   };
 
-  // Start recording
   const startRecording = async () => {
     setError('');
     try {
@@ -43,7 +42,6 @@ const VoiceNotes = () => {
     }
   };
 
-  // Stop recording
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
@@ -51,7 +49,6 @@ const VoiceNotes = () => {
     }
   };
 
-  // Save note locally
   const saveNote = () => {
     if (!audioBlob) return;
     const reader = new FileReader();
@@ -69,70 +66,102 @@ const VoiceNotes = () => {
     reader.readAsDataURL(audioBlob);
   };
 
-  // Delete note
   const deleteNote = (id) => {
     const updatedNotes = notes.filter(note => note.id !== id);
     saveNotes(updatedNotes);
   };
 
-  // Format date/time
   const formatDateTime = (isoString) => {
     const date = new Date(isoString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
+    return date.toLocaleString();
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg h-full">
-      <h2 className="text-xl font-semibold mb-4">Voice Notes</h2>
-      <div className="mb-4">
-        <button
-          onClick={recording ? stopRecording : startRecording}
-          className={`px-4 py-2 rounded-md text-white ${recording ? 'bg-red-500' : 'bg-blue-600 hover:bg-blue-700'}`}
-        >
-          {recording ? 'Stop Recording' : 'Start Recording'}
-        </button>
-        {audioBlob && (
-          <button
-            onClick={saveNote}
-            className="ml-2 px-4 py-2 rounded-md bg-green-600 text-white hover:bg-green-700"
-          >
-            Save Note
-          </button>
-        )}
+    <div className="bg-gray-800 rounded-xl shadow-lg overflow-hidden h-full">
+      <div className="bg-green-900/30 p-4 flex items-center">
+        <FaMicrophone className="text-xl text-green-400 mr-3" />
+        <h2 className="text-xl font-semibold text-white">Voice Notes</h2>
       </div>
-      {error && <div className="text-red-600 mb-2">{error}</div>}
-      {audioBlob && (
-        <div className="mt-4">
-          <audio controls src={URL.createObjectURL(audioBlob)} />
-          <div className="text-xs text-gray-500 mt-1">Preview before saving</div>
+      <div className="p-6">
+        <div className="mb-4 flex space-x-2">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={recording ? stopRecording : startRecording}
+            className={`flex items-center px-4 py-2 rounded-lg ${
+              recording ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'
+            } text-white`}
+          >
+            {recording ? (
+              <>
+                <FaStop className="mr-2" /> Stop Recording
+              </>
+            ) : (
+              <>
+                <FaMicrophone className="mr-2" /> Start Recording
+              </>
+            )}
+          </motion.button>
+          {audioBlob && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={saveNote}
+              className="flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg"
+            >
+              <FaSave className="mr-2" /> Save Note
+            </motion.button>
+          )}
         </div>
-      )}
-      <div className="mt-6">
-        <h3 className="font-semibold mb-2">Saved Notes</h3>
-        {notes.length === 0 && <div className="text-gray-500">No voice notes yet.</div>}
-        <ul className="space-y-3">
-          {notes.map(note => (
-            <li key={note.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
-              <div>
-                <audio controls src={note.audio} />
-                <div className="text-xs text-gray-500">
-                  {note.created_at ? formatDateTime(note.created_at) : ''}
-                </div>
-              </div>
-              <button
-                onClick={() => deleteNote(note.id)}
-                className="ml-4 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
+        
+        {error && <div className="text-red-400 mb-4 text-sm">{error}</div>}
+        
+        {audioBlob && (
+          <div className="mt-4 bg-gray-700/50 p-4 rounded-lg">
+            <div className="flex items-center space-x-4">
+              <button 
+                onClick={() => new Audio(URL.createObjectURL(audioBlob)).play()}
+                className="p-2 bg-gray-600 hover:bg-gray-500 rounded-full text-white"
               >
-                Delete
+                <FaPlay size={12} />
               </button>
-            </li>
-          ))}
-        </ul>
+              <span className="text-gray-300 text-sm">Preview recording</span>
+            </div>
+          </div>
+        )}
+
+        <div className="mt-6">
+          <h3 className="font-semibold text-white mb-4">Saved Notes</h3>
+          {notes.length === 0 ? (
+            <div className="text-gray-400 text-center py-4">No voice notes yet</div>
+          ) : (
+            <ul className="space-y-3 max-h-60 overflow-y-auto">
+              {notes.map(note => (
+                <li key={note.id} className="bg-gray-700/50 p-3 rounded-lg flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <button 
+                      onClick={() => new Audio(note.audio).play()}
+                      className="p-2 bg-blue-600 hover:bg-blue-500 rounded-full text-white"
+                    >
+                      <FaPlay size={12} />
+                    </button>
+                    <div>
+                      <div className="text-xs text-gray-400">
+                        {note.created_at ? formatDateTime(note.created_at) : 'No date'}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => deleteNote(note.id)}
+                    className="p-2 text-red-400 hover:text-red-300 rounded-full"
+                  >
+                    <FaTrash size={14} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );

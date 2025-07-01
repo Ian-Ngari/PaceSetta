@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaDumbbell, FaChartLine, FaUsers, FaTools, FaAppleAlt, FaHistory } from 'react-icons/fa';
+import { FaDumbbell, FaChartLine, FaUsers, FaTools, FaAppleAlt, FaHistory, FaCrown } from 'react-icons/fa';
 import useUserData from '../hooks/useUserData';
 
 const Dashboard = () => {
@@ -20,6 +20,12 @@ const Dashboard = () => {
       description: "Track your fitness journey with detailed analytics",
       path: "/progress",
     },
+      {
+    icon: <FaDumbbell className="text-2xl text-blue-600" />,
+    title: "Exercise Library",
+    description: "Browse our collection of exercises with video tutorials",
+    path: "/exercises",
+  },
     {
       icon: <FaUsers className="text-2xl text-blue-600" />,
       title: "Social Feed",
@@ -54,26 +60,52 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black-800 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-900 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl md:text-4xl font-bold text-gray-300"
+            className="text-3xl md:text-4xl font-bold text-white mb-2"
           >
-            Welcome back, <span className="text-blue-600">{userData?.username || 'Athlete'}</span>!
+            Welcome back, <span className="text-blue-400">{userData?.username || 'Athlete'}</span>!
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-2 text-white-600"
+            transition={{ delay: 0.2 }}
+            className="text-gray-400"
           >
             Ready to crush your fitness goals today?
           </motion.p>
         </div>
+
+        {/* Membership Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-8 bg-gradient-to-r from-yellow-600 to-yellow-500 rounded-xl shadow-lg overflow-hidden"
+        >
+          <div className="p-6 flex flex-col md:flex-row items-center justify-between">
+            <div className="flex items-center mb-4 md:mb-0">
+              <FaCrown className="text-2xl text-white mr-4" />
+              <div>
+                <h2 className="text-xl font-bold text-white">Unlock Premium Features</h2>
+                <p className="text-yellow-100">Get access to exclusive workouts and advanced analytics</p>
+              </div>
+            </div>
+            <Link to="/membership">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 bg-white text-yellow-700 font-bold rounded-lg shadow hover:bg-gray-100 transition-colors"
+              >
+                Upgrade Now
+              </motion.button>
+            </Link>
+          </div>
+        </motion.div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -82,17 +114,17 @@ const Dashboard = () => {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-xl p-6 shadow-lg"
+              transition={{ delay: index * 0.1 }}
+              className="bg-gray-800 rounded-xl p-6 shadow-lg"
             >
-              <p className="text-gray-600 text-sm">{stat.label}</p>
-              <div className="flex items-baseline mt-1">
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+              <p className="text-gray-400 text-sm mb-1">{stat.label}</p>
+              <div className="flex items-baseline">
+                <p className="text-2xl font-bold text-white">{stat.value}</p>
                 {stat.change && (
                   <span className={`ml-2 text-xs px-2 py-1 rounded-full ${
                     stat.changeType === 'positive' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-red-100 text-red-800'
+                      ? 'bg-green-900 text-green-300' 
+                      : 'bg-red-900 text-red-300'
                   }`}>
                     {stat.change}
                   </span>
@@ -109,18 +141,18 @@ const Dashboard = () => {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
-                className="h-full bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow"
+                className="h-full bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-700 hover:border-blue-500/30"
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mr-4">
+                  <div className="w-12 h-12 rounded-lg bg-blue-900/20 flex items-center justify-center mr-4">
                     {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">{feature.title}</h3>
+                  <h3 className="text-xl font-bold text-white">{feature.title}</h3>
                 </div>
-                <p className="text-gray-600 mb-6">{feature.description}</p>
-                <div className="flex items-center text-blue-600 hover:text-blue-700 transition">
+                <p className="text-gray-400 mb-6">{feature.description}</p>
+                <div className="flex items-center text-blue-400 hover:text-blue-300 transition">
                   <span className="mr-2">Get started</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
@@ -135,23 +167,23 @@ const Dashboard = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-white rounded-xl shadow-lg overflow-hidden"
+          transition={{ delay: 0.4 }}
+          className="bg-gray-800 rounded-xl shadow-lg overflow-hidden"
         >
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900">Recent Activity</h2>
+          <div className="px-6 py-4 border-b border-gray-700">
+            <h2 className="text-xl font-bold text-white">Recent Activity</h2>
           </div>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-700">
             {[
               { action: "Completed Chest Workout", time: "2 hours ago" },
               { action: "Achieved new PR in Deadlift", time: "1 day ago" },
               { action: "Logged 3 new exercises", time: "2 days ago" },
               { action: "Started new workout plan", time: "3 days ago" }
             ].map((activity, index) => (
-              <div key={index} className="p-6">
+              <div key={index} className="p-6 hover:bg-gray-700/50 transition-colors">
                 <div className="flex justify-between">
-                  <p className="text-gray-900">{activity.action}</p>
-                  <span className="text-gray-500 text-sm">{activity.time}</span>
+                  <p className="text-white">{activity.action}</p>
+                  <span className="text-gray-400 text-sm">{activity.time}</span>
                 </div>
               </div>
             ))}

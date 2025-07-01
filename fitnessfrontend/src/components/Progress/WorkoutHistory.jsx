@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../utils/api';
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
 const WorkoutHistory = ({ refreshKey }) => {
   const [workoutData, setWorkoutData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -10,12 +21,15 @@ const WorkoutHistory = ({ refreshKey }) => {
       setLoading(true);
       try {
         const response = await api.get('/workouts/logs/');
-        setWorkoutData(response.data);
-        // Debug log: show fetched logs in the browser console
-        console.log('Fetched workout logs:', response.data);
+        // Format dates before setting state
+        const formattedData = response.data.map(log => ({
+          ...log,
+          date: formatDate(log.date)
+        }));
+        setWorkoutData(formattedData);
+        console.log('Fetched workout logs:', formattedData);
       } catch (error) {
         setWorkoutData([]);
-        // Debug log: show error in the browser console
         console.error('Error fetching workout logs:', error);
       } finally {
         setLoading(false);

@@ -13,7 +13,7 @@ from .views import (
     # WorkoutHistoryView,
     ProgressView,
     SocialFeedView,
-    CurrentWorkoutPlanView,
+    # CurrentWorkoutPlanView,  # <-- REMOVE or keep commented out
     WorkoutLogView,
     FollowUserView,
     WorkoutCompletionView,
@@ -21,6 +21,10 @@ from .views import (
     LeaderboardView,
     VoiceNoteListCreateView,
     VoiceNoteDeleteView,
+    UserStatsView,
+    UserUpdateView,
+    AIChatView,
+    PremiumStatusView,
 )
 
 urlpatterns = [
@@ -35,7 +39,7 @@ urlpatterns = [
 
     # Workouts
     path('workout-plans/', WorkoutPlanView.as_view(), name='workout-plans'),
-    path('workout-plans/current/', CurrentWorkoutPlanView.as_view(), name='current-workout-plan'),
+    # path('workout-plans/current/', CurrentWorkoutPlanView.as_view(), name='current-workout-plan'),  # <-- REMOVE or comment out
     path('exercises/', ExerciseListView.as_view(), name='exercise-list'),
     path('exercises/create/', ExerciseCreateView.as_view(), name='exercise-create'),
     # path('workouts/history/', WorkoutHistoryView.as_view(), name='workout-history'),
@@ -48,15 +52,16 @@ urlpatterns = [
     # Social
     path('social/feed/', SocialFeedView.as_view(), name='social-feed'),
     path('social/activity/', ActivityFeedView.as_view(), name='activity-feed'),
-  
     path('social/leaderboard/', LeaderboardView.as_view(), name='leaderboard'),
 
-
-      path('tools/voice-notes/', VoiceNoteListCreateView.as_view(), name='voice-notes'),
+    path('tools/voice-notes/', VoiceNoteListCreateView.as_view(), name='voice-notes'),
     path('tools/voice-notes/<int:pk>/', VoiceNoteDeleteView.as_view(), name='voice-note-delete'),
-     path('api/payments/', include('payments.urls')),
+    path('api/payments/', include('payments.urls')),
+    path('user/stats/', UserStatsView.as_view(), name='user-stats'),
+    path('user/update/', UserUpdateView.as_view(), name='user-update'),
+    path('api/ai-chat/', AIChatView.as_view(), name='ai-chat'),
+  path('account/status/', PremiumStatusView.as_view(), name='premium-status'),
 ]
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

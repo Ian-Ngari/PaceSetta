@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog, Follow, WorkoutCompletion, Activity, WorkoutLogLike, WorkoutLogComment, VoiceNote
+from .models import WorkoutPlan, WorkoutRoutine, WorkoutExercise, Exercise, WorkoutLog, Follow, WorkoutCompletion, Activity, WorkoutLogLike, WorkoutLogComment, VoiceNote, AIChat
 
 User = get_user_model()
 
@@ -86,11 +86,12 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
 from .models import WorkoutLog
 
+
 class WorkoutLogSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username', read_only=True)
     class Meta:
         model = WorkoutLog
-        fields = ['id', 'user', 'date', 'exercise', 'sets', 'reps', 'weight']
+        fields = ['id', 'exercise', 'sets', 'reps', 'calories', 'duration', 'date']
+        read_only_fields = ['id', 'date', 'user']
 
 class WorkoutLogLikeSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.username', read_only=True)
@@ -138,3 +139,8 @@ class VoiceNoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = VoiceNote
         fields = ['id', 'username', 'audio', 'created_at']
+
+class AIChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AIChat
+        fields = ['id', 'message', 'response', 'created_at']

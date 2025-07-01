@@ -15,6 +15,8 @@ import ProgressPage from './pages/ProgressPage';
 import SocialPage from './pages/SocialPage';
 import ToolsPage from './pages/ToolsPage';
 import NutritionPage from './pages/NutritionPage';
+import ProfilePage from './pages/ProfilePage';
+import AIChatPage from './pages/AIChatPage';
 
 function App() {
   const location = useLocation();
@@ -139,7 +141,18 @@ function App() {
                 <NutritionPage />
               </motion.div>
             } />
+             <Route path="/profile" element={
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ProfilePage />
+              </motion.div>
+            } />
              <Route path="/membership" element={<MembershipPage />} />
+                         <Route path="/ai-chat" element={<AIChatPage />} />
           </Route>
           
           {/* 404 Fallback */}

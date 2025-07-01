@@ -30,6 +30,9 @@ class CustomUser(AbstractUser):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
+    is_premium = models.BooleanField(default=False)
+    premium_since = models.DateTimeField(null=True, blank=True)
+
     def __str__(self):
         return self.username
 
@@ -81,17 +84,13 @@ class Exercise(models.Model):
         return self.name
     
 class WorkoutLog(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
-    exercise = models.CharField(max_length=100)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    exercise = models.CharField(max_length=255)
     sets = models.PositiveIntegerField()
     reps = models.PositiveIntegerField()
-    weight = models.FloatField(null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.exercise} on {self.date}"
-    
-
+    calories = models.PositiveIntegerField()
+    duration = models.PositiveIntegerField(null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
     
 class Follow(models.Model):
     follower = models.ForeignKey(CustomUser, related_name='following', on_delete=models.CASCADE)
@@ -137,5 +136,14 @@ class VoiceNote(models.Model):
     audio = models.FileField(upload_to='voice_notes/', storage=FileSystemStorage())
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.user.username} - {self.created_at}"
+    
+class AIChat(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField()
+    response = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
         return f"{self.user.username} - {self.created_at}"
