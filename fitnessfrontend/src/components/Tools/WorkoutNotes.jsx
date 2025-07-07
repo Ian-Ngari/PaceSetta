@@ -40,7 +40,7 @@ const WorkoutNotes = () => {
   };
 
   return (
-    <div className="bg-gray-800 rounded-xl shadow-lg overflow-hidden h-full">
+    <div className="bg-gray-950 rounded-xl shadow-lg overflow-hidden h-full">
       <div className="bg-purple-900/30 p-4 flex items-center">
         <FaStickyNote className="text-xl text-purple-400 mr-3" />
         <h2 className="text-xl font-semibold text-white">Workout Notes</h2>

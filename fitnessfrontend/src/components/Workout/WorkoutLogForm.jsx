@@ -64,7 +64,7 @@ const WorkoutLogForm = ({
 };
 
   return (
-    <div className="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-gray-950 rounded-xl shadow-lg overflow-hidden">
       <div className="bg-blue-900/30 p-4 flex items-center">
         <h2 className="text-xl font-semibold text-white">Log Your Workout</h2>
       </div>
@@ -78,7 +78,7 @@ const WorkoutLogForm = ({
               placeholder="Enter exercise name"
               value={form.exercise}
               onChange={handleChange}
-              className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -92,7 +92,7 @@ const WorkoutLogForm = ({
                 placeholder="0"
                 value={form.sets}
                 onChange={handleChange}
-                className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
                 min="1"
               />
@@ -105,7 +105,7 @@ const WorkoutLogForm = ({
                 placeholder="0"
                 value={form.reps}
                 onChange={handleChange}
-                className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
                 min="1"
               />
@@ -121,7 +121,7 @@ const WorkoutLogForm = ({
                 placeholder="10"
                 value={form.duration}
                 onChange={handleChange}
-                className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 min="1"
               />
             </div>
@@ -134,7 +134,7 @@ const WorkoutLogForm = ({
                   placeholder="0"
                   value={form.calories}
                   onChange={handleChange}
-                  className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   min="0"
                 />
                 <motion.button

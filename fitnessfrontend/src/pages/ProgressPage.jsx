@@ -80,7 +80,7 @@ const ProgressPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-900 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-16 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -97,7 +97,7 @@ const ProgressPage = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-gray-800 p-6 rounded-xl shadow-lg"
+            className="bg-gray-950 p-6 rounded-xl shadow-lg"
           >
             <div className="flex items-center space-x-3 mb-6">
               <FaChartBar className="text-xl text-blue-500" />
@@ -130,7 +130,7 @@ const ProgressPage = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-gray-800 p-6 rounded-xl shadow-lg"
+            className="bg-gray-950 p-6 rounded-xl shadow-lg"
           >
             <div className="flex items-center space-x-3 mb-6">
               <FaCalendarAlt className="text-xl text-blue-500" />
@@ -150,7 +150,7 @@ const ProgressPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gray-800 p-6 rounded-xl shadow-lg"
+          className="bg-gray-950 p-6 rounded-xl shadow-lg"
         >
           <div className="flex items-center space-x-3 mb-6">
             <FaHistory className="text-xl text-blue-500" />
@@ -173,7 +173,7 @@ const ProgressPage = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Calories Lost</th>
                   </tr>
                 </thead>
-                <tbody className="bg-gray-800 divide-y divide-gray-700">
+                <tbody className="bg-gray-950 divide-y divide-gray-700">
                   {workoutData.length === 0 ? (
                     <tr>
                       <td colSpan={5} className="px-6 py-4 whitespace-nowrap text-center text-gray-400">

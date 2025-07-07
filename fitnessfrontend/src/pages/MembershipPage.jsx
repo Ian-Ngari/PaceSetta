@@ -139,7 +139,7 @@ const MembershipPage = () => {
 };
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-gray-900">
+    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
       {/* Blurred background image */}
       <img
         src={bgImage}

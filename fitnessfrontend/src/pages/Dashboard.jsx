@@ -60,7 +60,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-16 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12">
           <motion.h1 
@@ -115,7 +115,7 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-gray-800 rounded-xl p-6 shadow-lg"
+              className="bg-gray-950 rounded-xl p-6 shadow-lg"
             >
               <p className="text-gray-400 text-sm mb-1">{stat.label}</p>
               <div className="flex items-baseline">
@@ -143,7 +143,7 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
-                className="h-full bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-700 hover:border-blue-500/30"
+                className="h-full bg-gray-950 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-700 hover:border-blue-500/30"
               >
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 rounded-lg bg-blue-900/20 flex items-center justify-center mr-4">
@@ -168,7 +168,7 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gray-800 rounded-xl shadow-lg overflow-hidden"
+          className="bg-gray-950 rounded-xl shadow-lg overflow-hidden"
         >
           <div className="px-6 py-4 border-b border-gray-700">
             <h2 className="text-xl font-bold text-white">Recent Activity</h2>

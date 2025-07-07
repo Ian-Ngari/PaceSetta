@@ -47,7 +47,7 @@ const WorkoutForm = ({
       animate={{ opacity: 1, scale: 1 }}
       className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4"
     >
-      <div className="bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-gray-950 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-white flex items-center">
@@ -57,7 +57,7 @@ const WorkoutForm = ({
             {onCancel && (
               <button
                 onClick={onCancel}
-                className="text-gray-400 hover:text-white"
+                className="text-gray-950 hover:text-white"
               >
                 <FaTimes />
               </button>
@@ -72,7 +72,7 @@ const WorkoutForm = ({
                   name="goal"
                   value={form.goal}
                   onChange={handleChange}
-                  className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
                   <option value="">Select goal</option>
@@ -89,7 +89,7 @@ const WorkoutForm = ({
                   name="level"
                   value={form.level}
                   onChange={handleChange}
-                  className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
                   <option value="">Select level</option>
@@ -108,7 +108,7 @@ const WorkoutForm = ({
                   max={5}
                   value={form.days}
                   onChange={handleChange}
-                  className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -119,7 +119,7 @@ const WorkoutForm = ({
                   multiple
                   value={filters.bodyParts}
                   onChange={handleBodyPartsChange}
-                  className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
+                  className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
                 >
                   {availableFilters.bodyParts.map(bp => (
                     <option key={bp} value={bp}>
@@ -135,7 +135,7 @@ const WorkoutForm = ({
                   multiple
                   value={filters.targetMuscles}
                   onChange={handleTargetMusclesChange}
-                  className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
+                  className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
                 >
                   {availableFilters.targetMuscles.map(tm => (
                     <option key={tm} value={tm}>
@@ -151,7 +151,7 @@ const WorkoutForm = ({
                   multiple
                   value={filters.equipment}
                   onChange={handleEquipmentChange}
-                  className="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
+                  className="w-full bg-gray-950 border border-gray-600 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
                 >
                   {availableFilters.equipment.map(eq => (
                     <option key={eq} value={eq}>
@@ -169,7 +169,7 @@ const WorkoutForm = ({
                   onClick={onCancel}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
+                  className="px-4 py-2 bg-gray-950 hover:bg-gray-600 text-white rounded-lg"
                   disabled={isLoading}
                 >
                   Cancel

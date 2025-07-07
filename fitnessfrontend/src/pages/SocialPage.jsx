@@ -45,7 +45,7 @@ const SocialPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-900 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-16 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -63,7 +63,7 @@ const SocialPage = () => {
             transition={{ delay: 0.1 }}
             className="md:col-span-2"
           >
-            <div className="bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className="bg-gray-950 rounded-xl shadow-lg p-6">
               <div className="flex items-center mb-4">
                 <FaFire className="text-2xl text-orange-400 mr-3" />
                 <h2 className="text-xl font-semibold text-white">Recent Community Activity</h2>
@@ -106,7 +106,7 @@ const SocialPage = () => {
             transition={{ delay: 0.2 }}
             className="md:col-span-1 space-y-6"
           >
-            <div className="bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className="bg-gray-950 rounded-xl shadow-lg p-6">
               <div className="flex items-center mb-4">
                 <FaTrophy className="text-2xl text-yellow-400 mr-3" />
                 <h2 className="text-xl font-semibold text-white">Top Performers</h2>

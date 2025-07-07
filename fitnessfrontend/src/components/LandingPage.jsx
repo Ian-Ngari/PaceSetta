@@ -29,7 +29,7 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div className="min-h-screen bg-black text-gray-100">
       
       <div 
   className="relative bg-cover bg-center min-h-screen"
@@ -78,7 +78,7 @@ const LandingPage = () => {
       </div>
 
       
-      <div className="py-24 bg-gray-800">
+      <div className="py-24 bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div ref={ref1} className="text-center">
             <motion.h2 
@@ -119,7 +119,7 @@ const LandingPage = () => {
       </div>
 
       
-      <div className="py-16 bg-gray-800">
+      <div className="py-16 bg-black">
         <div className="max-w-3xl mx-auto text-center px-4">
           <h2 className="text-3xl font-bold mb-6 text-white-900">What Our Users Say</h2>
           <div className="bg-[#CAF0F8] p-8 rounded-xl shadow-inner">

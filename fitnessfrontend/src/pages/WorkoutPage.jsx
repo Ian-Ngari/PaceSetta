@@ -221,7 +221,7 @@ dayExercises.push({
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-16 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -299,7 +299,7 @@ dayExercises.push({
                   }}
                 />
                 
-                <div className="bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className="bg-gray-950 rounded-xl shadow-lg p-6">
                   <div className="flex items-center space-x-4 mb-6">
                     <FaChartLine className="text-2xl text-blue-500" />
                     <h2 className="text-2xl font-bold text-white">Log Your Workout</h2>
@@ -309,7 +309,7 @@ dayExercises.push({
                     workoutPlan.routines.map((routine) => {
                       const isCompleted = completedRoutines.includes(routine.day);
                       return (
-                        <div key={routine.day} className="mb-8 bg-gray-700/50 rounded-lg p-6">
+                        <div key={routine.day} className="mb-8 bg-gray-950 rounded-lg p-6">
                           <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-semibold text-white flex items-center">
                               {routine.day}
@@ -334,7 +334,7 @@ dayExercises.push({
                           
                           {routine.exercises && routine.exercises.length > 0 ? (
                             routine.exercises.map((exercise) => (
-                              <div key={exercise.id} className="mb-6 p-4 bg-gray-800 rounded-lg shadow">
+                              <div key={exercise.id} className="mb-6 p-4 bg-gray-950 rounded-lg shadow">
                                 <div className="font-medium text-white mb-2">{exercise.name}</div>
                                 <div className="text-sm text-gray-300 mb-4">
                                   <span className="bg-blue-900/50 px-2 py-1 rounded mr-2">
@@ -362,7 +362,7 @@ dayExercises.push({
                   )}
                 </div>
 
-                <div className="bg-gray-800 rounded-xl shadow-lg p-6">
+                <div className="bg-gray-950 rounded-xl shadow-lg p-6">
                   <div className="flex items-center space-x-4 mb-6">
                     <FaHistory className="text-2xl text-blue-500" />
                     <h2 className="text-2xl font-bold text-white">Workout History</h2>
@@ -376,7 +376,7 @@ dayExercises.push({
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="bg-gray-800 shadow-lg rounded-xl p-8 text-center"
+                className="bg-gray-950 shadow-lg rounded-xl p-8 text-center"
               >
                 <div className="bg-blue-900/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <FaDumbbell className="text-2xl text-blue-400" />

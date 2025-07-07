@@ -275,7 +275,7 @@ const NutritionPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-16 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -334,7 +334,7 @@ const NutritionPage = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-gray-800 rounded-xl shadow-lg p-6"
+            className="bg-gray-950 rounded-xl shadow-lg p-6"
           >
             <h2 className="text-xl font-semibold text-white mb-4">Search Recipes</h2>
             <form onSubmit={searchRecipes} className="flex mb-4">
@@ -363,7 +363,7 @@ const NutritionPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mb-8 bg-gray-800 rounded-xl shadow-lg p-6"
+            className="mb-8 bg-gray-950 rounded-xl shadow-lg p-6"
           >
             <h2 className="text-xl font-semibold text-white mb-4">Recipe Results</h2>
             <div className="grid md:grid-cols-2 gap-4">
@@ -412,7 +412,7 @@ const NutritionPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gray-800 rounded-xl shadow-lg p-6 mb-8"
+          className="bg-gray-950 rounded-xl shadow-lg p-6 mb-8"
         >
           <h2 className="text-xl font-semibold text-white mb-4">Today's Meal Plan</h2>
           {mealPlan.length === 0 ? (

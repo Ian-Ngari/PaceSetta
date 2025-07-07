@@ -90,7 +90,7 @@ const ExercisesPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 pt-16 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-16 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -116,7 +116,7 @@ const ExercisesPage = () => {
           transition={{ delay: 0.2 }}
           className="mb-8"
         >
-          <div className="bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
+          <div className="bg-gray-950 rounded-xl shadow-lg p-6 mb-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-1">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -175,7 +175,7 @@ const ExercisesPage = () => {
             </div>
           ) : filteredExercises.length === 0 ? (
             <div className="text-center py-8">
-              <div className="bg-gray-800 text-gray-400 p-4 rounded-lg inline-block">
+              <div className="bg-gray-950 text-gray-400 p-4 rounded-lg inline-block">
                 No exercises found matching your criteria
               </div>
             </div>
@@ -190,7 +190,7 @@ const ExercisesPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.05 }}
                     whileHover={{ y: -5 }}
-                    className="bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-700 hover:border-blue-500/30"
+                    className="bg-gray-950 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-700 hover:border-blue-500/30"
                   >
                     <div className="flex items-start mb-4">
                       <div className="bg-blue-900/20 p-3 rounded-lg mr-4">

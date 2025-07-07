@@ -56,7 +56,7 @@ const WorkoutPlan = ({ plan, onEdit, onNewPlan }) => {
   };
 
   return (
-    <div className="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-gray-950 rounded-xl shadow-lg overflow-hidden">
       <div className="p-6">
         <div className="flex flex-col md:flex-row justify-between items-start mb-6">
           <div>
@@ -83,7 +83,7 @@ const WorkoutPlan = ({ plan, onEdit, onNewPlan }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onNewPlan}
-              className="flex items-center px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
+              className="flex items-center px-4 py-2 bg-gray-950 hover:bg-gray-600 text-white rounded-lg"
             >
               <FaPlus className="mr-2" /> New Plan
             </motion.button>
