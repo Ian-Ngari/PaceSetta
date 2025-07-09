@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import LandingPage from './components/LandingPage';
 import MembershipPage from './pages/MembershipPage';
 import Register from './components/Auth/Register';
-import Login from './components/Auth/login';
+import Login from './components/Auth/Login';
 import PrivateRoute from './components/Auth/PrivateRoute';
 import Navbar from './components/Layout/Navbar';
 import Dashboard from './pages/Dashboard';
