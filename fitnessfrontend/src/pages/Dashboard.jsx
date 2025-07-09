@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import api from '../utils/api'; 
 import { FaDumbbell, FaChartLine, FaUsers, FaTools, FaAppleAlt, FaHistory, FaCrown, FaFire, FaTrophy, FaHeartbeat } from 'react-icons/fa';
 import useUserData from '../hooks/useUserData';
 
@@ -9,34 +10,33 @@ const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch('/user-stats/');
-        if (!response.ok) throw new Error('Failed to fetch stats');
-        const data = await response.json();
-        
-        setStats({
-          workoutsCompleted: data.workoutsCompleted || 0,
-          currentStreak: data.currentStreak || 0,
-          totalCalories: data.totalCalories || 0,
-          totalExercises: data.totalExercises || 0
-        });
-      } catch (error) {
-        console.error('Error fetching stats:', error);
-        setStats({
-          workoutsCompleted: 0,
-          currentStreak: 0,
-          totalCalories: 0,
-          totalExercises: 0
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  
+useEffect(() => {
+  const fetchStats = async () => {
+    try {
+      // Use the correct endpoint and API utility
+      const response = await api.get('/user/stats/');
+      setStats({
+        workoutsCompleted: response.data.workoutsCompleted || 0,
+        currentStreak: response.data.currentStreak || 0,
+        totalCalories: response.data.totalCalories || 0,
+        totalExercises: response.data.totalExercises || 0
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+      setStats({
+        workoutsCompleted: 0,
+        currentStreak: 0,
+        totalCalories: 0,
+        totalExercises: 0
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchStats();
-  }, []);
+  fetchStats();
+}, []);
 
   // Calculate changes (you can enhance this with real data later)
   const calculateChange = (current) => {
