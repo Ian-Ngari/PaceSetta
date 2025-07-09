@@ -14,7 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
-
+import dj_database_url
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -127,15 +127,20 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'fitness',
-        'USER': 'fitness1_user',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'fitness',
+#         'USER': 'fitness1_user',
+#         'PASSWORD': '123456',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+DATABASES = { 
+
+"default": dj_database_url.parse("postgresql://fit_genius_user:09eGbV843u4QILksCgHTMF5iy0qbihUN@dpg-d1n4u9mr433s73bc7e10-a.oregon-postgres.render.com/fit_genius") 
 }
 
 
@@ -186,8 +191,9 @@ FRONTEND_DOMAIN = os.getenv('FRONTEND_DOMAIN')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+STATICFILES_DIRS = [BASE_DIR / "static"] 
 MEDIA_ROOT = BASE_DIR / 'media'
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 # Default primary key field type
