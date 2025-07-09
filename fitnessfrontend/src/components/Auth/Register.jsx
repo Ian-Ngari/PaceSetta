@@ -29,7 +29,7 @@ const Register = () => {
       return;
     }
     try {
-      const { data } = await axios.post('http://localhost:8000/register/', formData);
+      const { data } = await axios.post('https://fitgenius1.onrender.com/register/', formData);
       localStorage.setItem('access_token', data.access);
       localStorage.setItem('refresh_token', data.refresh);
       setShowModal(true);

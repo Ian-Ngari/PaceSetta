@@ -61,7 +61,7 @@ const MembershipPage = () => {
   const checkPremiumStatus = async () => {
     try {
       const token = localStorage.getItem('access_token');
-      const response = await fetch('http://localhost:8000/account/status/', {
+      const response = await fetch('https://fitgenius1.onrender.com/account/status/', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

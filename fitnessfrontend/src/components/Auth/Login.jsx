@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
     setError(null);
     try {
-      const { data } = await axios.post('http://localhost:8000/login/', formData);
+      const { data } = await axios.post('https://fitgenius1.onrender.com/login/', formData);
       localStorage.setItem('access_token', data.access);
       localStorage.setItem('refresh_token', data.refresh);
       setShowModal(true);

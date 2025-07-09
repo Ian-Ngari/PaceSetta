@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-d&b)w(j12he+ur5!)0isil3z7h@46$fcb6rkh5b)!3v_#p$m!a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -93,12 +93,14 @@ WSGI_APPLICATION = 'fitnessbackend.wsgi.application'
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
+    "https://fit-genius-10.vercel.app/",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:5173",  
 ]
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
+    "https://fit-genius-10.vercel.app/",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:5173",

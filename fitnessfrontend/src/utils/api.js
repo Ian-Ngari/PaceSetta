@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'https://fitgenius1.onrender.com/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -48,7 +48,7 @@ api.interceptors.response.use(
         const refreshToken = localStorage.getItem('refresh_token');
         if (!refreshToken) throw new Error('No refresh token');
         const response = await axios.post(
-          'http://localhost:8000/token/refresh/',
+          'https://fitgenius1.onrender.com/token/refresh/',
           { refresh: refreshToken },
           { withCredentials: true }
         );
