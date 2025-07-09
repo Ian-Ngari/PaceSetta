@@ -23,7 +23,7 @@ const SocialPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch both leaderboard and activity in parallel
+        
         const [leaderboardRes, activityRes] = await Promise.all([
           api.get('/social/leaderboard/'),
           api.get('/social/activity/')

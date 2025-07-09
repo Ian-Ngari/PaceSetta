@@ -10,10 +10,10 @@ from .views import (
     WorkoutPlanView,
     ExerciseListView,
     ExerciseCreateView,  
-    # WorkoutHistoryView,
+    
     ProgressView,
     SocialFeedView,
-    # CurrentWorkoutPlanView,  # <-- REMOVE or keep commented out
+   
     WorkoutLogView,
     FollowUserView,
     WorkoutCompletionView,
@@ -39,10 +39,10 @@ urlpatterns = [
 
     # Workouts
     path('workout-plans/', WorkoutPlanView.as_view(), name='workout-plans'),
-    # path('workout-plans/current/', CurrentWorkoutPlanView.as_view(), name='current-workout-plan'),  # <-- REMOVE or comment out
+
     path('exercises/', ExerciseListView.as_view(), name='exercise-list'),
     path('exercises/create/', ExerciseCreateView.as_view(), name='exercise-create'),
-    # path('workouts/history/', WorkoutHistoryView.as_view(), name='workout-history'),
+   
     path('workouts/logs/', WorkoutLogView.as_view(), name='workout-log'),
     path('workouts/completed/', WorkoutCompletionView.as_view(), name='workout-completed'),
    

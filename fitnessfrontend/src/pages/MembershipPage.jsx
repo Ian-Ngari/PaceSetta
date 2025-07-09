@@ -140,7 +140,6 @@ const MembershipPage = () => {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
-      {/* Blurred background image */}
       <img
         src={bgImage}
         alt="Premium Features Preview"
@@ -266,7 +265,7 @@ const MembershipPage = () => {
             transition={{ delay: 0.4 }}
             className="space-y-6"
           >
-            <div className="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+            <div className="bg-gray-950 backdrop-blur-sm rounded-xl p-6 shadow-lg">
               <div className="flex items-center mb-4">
                 <div className="flex-shrink-0">
                   <img 
@@ -289,7 +288,7 @@ const MembershipPage = () => {
               </p>
             </div>
             
-            <div className="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+            <div className="bg-gray-950 backdrop-blur-sm rounded-xl p-6 shadow-lg">
               <div className="flex items-center mb-4">
                 <div className="flex-shrink-0">
                   <img 
@@ -312,7 +311,7 @@ const MembershipPage = () => {
               </p>
             </div>
             
-            <div className="bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+            <div className="bg-gray-950 backdrop-blur-sm rounded-xl p-6 shadow-lg">
               <div className="flex items-center mb-4">
                 <div className="flex-shrink-0">
                   <img 
@@ -342,7 +341,7 @@ const MembershipPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="mt-16 bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg p-8"
+          className="mt-16 bg-gray-950 backdrop-blur-sm rounded-xl shadow-lg p-8"
         >
           <h2 className="text-2xl font-bold text-white mb-6 text-center">Frequently Asked Questions</h2>
           <div className="grid md:grid-cols-2 gap-6">

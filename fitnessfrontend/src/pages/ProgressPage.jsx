@@ -30,18 +30,18 @@ const ProgressPage = () => {
       setLoading(true);
       try {
         const response = await api.get('/workouts/logs/');
-        // Format dates for display
+       
         const formattedWorkoutData = response.data.map(log => ({
           ...log,
           displayDate: formatDate(log.date)
         }));
         setWorkoutData(formattedWorkoutData);
 
-        // For calendar - use original date strings
+        
         const uniqueDates = [...new Set(response.data.map(log => log.date.split('T')[0]))];
         setCalendarDates(uniqueDates);
 
-        // Group by date and sum calories
+        
         const grouped = {};
         response.data.forEach(log => {
           const key = log.date.split('T')[0];
@@ -50,7 +50,7 @@ const ProgressPage = () => {
           grouped[key].count += 1;
         });
         
-        // Format chart data with readable dates
+        
         const chartData = Object.entries(grouped).map(([date, obj]) => ({
           date: formatDate(date),
           rawDate: date,

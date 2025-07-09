@@ -1,12 +1,78 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaDumbbell, FaChartLine, FaUsers, FaTools, FaAppleAlt, FaHistory, FaCrown } from 'react-icons/fa';
+import { FaDumbbell, FaChartLine, FaUsers, FaTools, FaAppleAlt, FaHistory, FaCrown, FaFire, FaTrophy, FaHeartbeat } from 'react-icons/fa';
 import useUserData from '../hooks/useUserData';
 
 const Dashboard = () => {
   const { userData } = useUserData();
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/user-stats/');
+        if (!response.ok) throw new Error('Failed to fetch stats');
+        const data = await response.json();
+        
+        setStats({
+          workoutsCompleted: data.workoutsCompleted || 0,
+          currentStreak: data.currentStreak || 0,
+          totalCalories: data.totalCalories || 0,
+          totalExercises: data.totalExercises || 0
+        });
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+        setStats({
+          workoutsCompleted: 0,
+          currentStreak: 0,
+          totalCalories: 0,
+          totalExercises: 0
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  // Calculate changes (you can enhance this with real data later)
+  const calculateChange = (current) => {
+    return current > 0 ? `+${current}` : '+0';
+  };
+
+  const statCards = [
+    { 
+      label: "Workouts", 
+      value: stats?.workoutsCompleted || 0,
+      change: calculateChange(stats?.workoutsCompleted || 0),
+      changeType: "positive",
+      icon: <FaDumbbell className="text-blue-500" />
+    },
+    { 
+      label: "Current Streak", 
+      value: stats?.currentStreak ? `${stats.currentStreak} days` : '0 days',
+      change: calculateChange(stats?.currentStreak || 0),
+      changeType: "positive",
+      icon: <FaFire className="text-orange-500" />
+    },
+    { 
+      label: "Calories Burned", 
+      value: stats?.totalCalories?.toLocaleString() || '0',
+      change: calculateChange(stats?.totalCalories ? Math.floor(stats.totalCalories/100) : 0),
+      changeType: "positive",
+      icon: <FaHeartbeat className="text-red-500" />
+    },
+    { 
+      label: "Exercises Logged", 
+      value: stats?.totalExercises || '0',
+      change: calculateChange(stats?.totalExercises || 0),
+      changeType: "positive",
+      icon: <FaTrophy className="text-yellow-500" />
+    }
+  ];
   const features = [
     {
       icon: <FaDumbbell className="text-2xl text-blue-600" />,
@@ -52,12 +118,7 @@ const Dashboard = () => {
     }
   ];
 
-  const stats = [
-    { label: "Workouts", value: "12", change: "+2", changeType: "positive" },
-    { label: "Current Streak", value: "5 days", change: "+1 day", changeType: "positive" },
-    { label: "Calories Burned", value: "3,450", change: "+420", changeType: "positive" },
-    { label: "Minutes Trained", value: "245", change: "+35", changeType: "positive" }
-  ];
+ 
 
   return (
     <div className="min-h-screen bg-black pt-16 pb-12 px-4 sm:px-6 lg:px-8">
@@ -108,31 +169,40 @@ const Dashboard = () => {
         </motion.div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-gray-950 rounded-xl p-6 shadow-lg"
-            >
-              <p className="text-gray-400 text-sm mb-1">{stat.label}</p>
-              <div className="flex items-baseline">
-                <p className="text-2xl font-bold text-white">{stat.value}</p>
-                {stat.change && (
-                  <span className={`ml-2 text-xs px-2 py-1 rounded-full ${
-                    stat.changeType === 'positive' 
-                      ? 'bg-green-900 text-green-300' 
-                      : 'bg-red-900 text-red-300'
-                  }`}>
-                    {stat.change}
-                  </span>
-                )}
-              </div>
-            </motion.div>
-          ))}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    {statCards.map((stat, index) => (
+      <motion.div
+        key={index}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.1 }}
+        className="bg-gray-950 rounded-xl p-6 shadow-lg"
+      >
+        <div className="flex items-center justify-between mb-1">
+          <p className="text-gray-400 text-sm">{stat.label}</p>
+          <div className="text-lg">
+            {stat.icon}
+          </div>
         </div>
+        <div className="flex items-baseline">
+          <p className="text-2xl font-bold text-white">
+            {loading ? (
+              <span className="inline-block h-6 w-16 bg-gray-800 rounded animate-pulse"></span>
+            ) : (
+              stat.value
+            )}
+          </p>
+          <span className={`ml-2 text-xs px-2 py-1 rounded-full ${
+            stat.changeType === 'positive' 
+              ? 'bg-green-900 text-green-300' 
+              : 'bg-red-900 text-red-300'
+          }`}>
+            {stat.change}
+          </span>
+        </div>
+      </motion.div>
+    ))}
+  </div>
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -162,33 +232,6 @@ const Dashboard = () => {
             </Link>
           ))}
         </div>
-
-        {/* Recent Activity */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-gray-950 rounded-xl shadow-lg overflow-hidden"
-        >
-          <div className="px-6 py-4 border-b border-gray-700">
-            <h2 className="text-xl font-bold text-white">Recent Activity</h2>
-          </div>
-          <div className="divide-y divide-gray-700">
-            {[
-              { action: "Completed Chest Workout", time: "2 hours ago" },
-              { action: "Achieved new PR in Deadlift", time: "1 day ago" },
-              { action: "Logged 3 new exercises", time: "2 days ago" },
-              { action: "Started new workout plan", time: "3 days ago" }
-            ].map((activity, index) => (
-              <div key={index} className="p-6 hover:bg-gray-700/50 transition-colors">
-                <div className="flex justify-between">
-                  <p className="text-white">{activity.action}</p>
-                  <span className="text-gray-400 text-sm">{activity.time}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import LandingPage from './components/LandingPage';
 import MembershipPage from './pages/MembershipPage';
-import Register from './components/Auth/register';
+import Register from './components/Auth/Register';
 import Login from './components/Auth/login';
 import PrivateRoute from './components/Auth/PrivateRoute';
 import Navbar from './components/Layout/Navbar';
@@ -37,7 +37,7 @@ function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <LandingPage /> {/* or LandingPage1B */}
+              <LandingPage /> 
             </motion.div>
           } />
           

@@ -95,14 +95,14 @@ const AIChatPage = () => {
   setError(null);
   
   try {
-    console.log("[FRONTEND] Sending message:", input); // Debug log
+    console.log("[FRONTEND] Sending message:", input); 
     const res = await api.post('/api/ai-chat/', { 
       message: input 
     }, {
-      timeout: 15000 // 15 second timeout
+      timeout: 15000 
     });
     
-    console.log("[FRONTEND] Received response:", res.data); // Debug log
+    console.log("[FRONTEND] Received response:", res.data);
     if (res.data?.response) {
       setMessages(msgs => [...msgs, { 
         role: 'ai', 

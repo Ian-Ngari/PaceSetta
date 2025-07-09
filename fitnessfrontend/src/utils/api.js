@@ -8,7 +8,7 @@ const api = axios.create({
   withCredentials: true
 });
 
-// Request interceptor
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
@@ -26,7 +26,7 @@ api.interceptors.request.use(
   }
 );
 
-// Response interceptor
+
 api.interceptors.response.use(
   (response) => {
     console.log('API response success:', response.config.url);
@@ -40,7 +40,7 @@ api.interceptors.response.use(
       message: error.message
     });
 
-    // If 401 and not already retried
+   
     if (error.response?.status === 401 && !originalRequest._retry) {
       console.log('Attempting token refresh...');
       originalRequest._retry = true;
@@ -67,23 +67,21 @@ api.interceptors.response.use(
   }
 );
 
-// Helper to normalize exercise names for better matching
+
 function normalizeName(name) {
   return name
     .toLowerCase()
-    .replace(/[\s\-_/\\]+/g, ' ') // replace separators with space
-    .replace(/[^\w\s]/g, '')      // remove punctuation
+    .replace(/[\s\-_/\\]+/g, ' ') 
+    .replace(/[^\w\s]/g, '')     
     .trim();
 }
 
 // Fetch and merge ExerciseDB and Wger exercises
 export async function fetchMergedExercises() {
-  // 1. Fetch from ExerciseDB (use your backend endpoint if you have one)
+  
   let exerciseDbExercises = [];
   try {
-    // If you have a Django proxy endpoint, use it here instead of RapidAPI:
-    // const exerciseDbRes = await api.get('/api/exercises/');
-    // exerciseDbExercises = exerciseDbRes.data;
+    
     const exerciseDbRes = await fetch('https://exercisedb.p.rapidapi.com/exercises', {
       headers: {
         'X-RapidAPI-Key': '155566486cmsh04126592945afe1p1f037fjsn2437c60b7baf',

@@ -35,7 +35,7 @@ const WorkoutPage = () => {
     equipment: []
   });
 
-  // Load workout plan from localStorage on component mount
+ 
   useEffect(() => {
     const savedPlan = localStorage.getItem('workoutPlan');
     if (savedPlan) {
@@ -44,7 +44,6 @@ const WorkoutPage = () => {
     fetchAvailableFilters();
   }, []);
 
-  // Save workout plan to localStorage whenever it changes
   useEffect(() => {
     if (workoutPlan) {
       localStorage.setItem('workoutPlan', JSON.stringify(workoutPlan));
@@ -100,13 +99,13 @@ const WorkoutPage = () => {
   setIsLoading(true);
   setError(null);
   try {
-    // Build query parameters based on selected filters
+    
     const queryParams = new URLSearchParams();
     if (filters.bodyParts.length > 0) queryParams.append('bodyPart', filters.bodyParts.join(','));
     if (filters.targetMuscles.length > 0) queryParams.append('target', filters.targetMuscles.join(','));
     if (filters.equipment.length > 0) queryParams.append('equipment', filters.equipment.join(','));
 
-    // Fetch exercises based on filters
+  
     const url = `https://${EXERCISE_DB_HOST}/exercises?${queryParams.toString()}`;
     const headers = {
       "X-RapidAPI-Key": EXERCISE_DB_API_KEY,
@@ -116,7 +115,7 @@ const WorkoutPage = () => {
     const res = await fetch(url, { headers });
     const exercises = await res.json();
 
-    // Generate workout plan structure
+   
     const days = Number(formData.days) || 3;
     const exercisesPerDay = formData.level === 'beginner' ? 4 : 6;
     
@@ -127,7 +126,7 @@ const WorkoutPage = () => {
       routines: [],
     };
 
-    // Create a copy of exercises array to avoid modifying the original
+    
     const availableExercises = [...exercises];
 
     for (let i = 0; i < days; i++) {

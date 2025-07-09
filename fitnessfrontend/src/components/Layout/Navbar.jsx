@@ -33,7 +33,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link 
               to="/" 
-              className="flex-shrink-0 flex items-center text-white font-bold text-xl mr-8"  // Added margin-right here
+              className="flex-shrink-0 flex items-center text-white font-bold text-xl mr-8"  
             >
               FitGenius
             </Link>

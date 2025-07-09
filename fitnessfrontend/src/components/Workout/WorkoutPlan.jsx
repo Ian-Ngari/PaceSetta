@@ -43,9 +43,9 @@ const WorkoutPlan = ({ plan, onEdit, onNewPlan }) => {
         yPosition += 3; // Spacing
       });
       
-      yPosition += 10; // Spacing between routines
+      yPosition += 10; 
       
-      // Page break if needed
+     
       if (yPosition > 280) {
         doc.addPage();
         yPosition = 20;

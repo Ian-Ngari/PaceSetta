@@ -448,13 +448,14 @@ class VoiceNoteDeleteView(generics.DestroyAPIView):
     
 class UserStatsView(APIView):
     def get(self, request):
-       
         workouts_completed = WorkoutCompletion.objects.filter(user=request.user).count()
-       
         total_calories = WorkoutLog.objects.filter(user=request.user).aggregate(
             total=Sum('calories')
         )['total'] or 0
-
+        
+        
+        total_exercises = WorkoutLog.objects.filter(user=request.user).count()
+        
         last_7_days = WorkoutCompletion.objects.filter(
             user=request.user,
             date__gte=timezone.now() - timedelta(days=7)
@@ -464,7 +465,8 @@ class UserStatsView(APIView):
         return Response({
             'workoutsCompleted': workouts_completed,
             'totalCalories': total_calories,
-            'currentStreak': current_streak
+            'currentStreak': current_streak,
+            'totalExercises': total_exercises  
         })
     
 class UserUpdateView(generics.UpdateAPIView):
